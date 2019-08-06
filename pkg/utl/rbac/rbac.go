@@ -46,14 +46,3 @@ func (s *Service) isAdmin(c echo.Context) bool {
 }
 
 
-// AccountCreate performs auth check when creating a new account
-// Location admin cannot create accounts, needs to be fixed on EnforceLocation function
-func (s *Service) AccountCreate(c echo.Context, roleID go_blog.AccessRole) error {
-	return s.IsLowerRole(c, roleID)
-}
-
-// IsLowerRole checks whether the requesting user has higher role than the user it wants to change
-// Used for account creation/deletion
-func (s *Service) IsLowerRole(c echo.Context, r go_blog.AccessRole) error {
-	return checkBool(c.Get("role").(go_blog.AccessRole) < r)
-}

@@ -54,5 +54,4 @@ type UDB interface {
 // RBAC represents role-based-access-control interface
 type RBAC interface {
 	EnforceUser(echo.Context, int) error
-	IsLowerRole(echo.Context, go_blog.AccessRole) error
 }

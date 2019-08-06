@@ -17,8 +17,11 @@ type HTTP struct {
 }
 
 // NewHTTP creates new user http service
-func NewHTTP(svc user.Service, er *echo.Group) {
+func NewHTTP(svc user.Service, er *echo.Group, e *echo.Echo) {
 	h := HTTP{svc}
+
+	e.POST("/users", h.create)
+
 	ur := er.Group("/users")
 	// swagger:route POST /v1/users users userCreate
 	// Creates new user account.
@@ -28,7 +31,6 @@ func NewHTTP(svc user.Service, er *echo.Group) {
 	//  401: err
 	//  403: errMsg
 	//  500: err
-	ur.POST("", h.create)
 
 	// swagger:operation GET /v1/users users listUsers
 	// ---

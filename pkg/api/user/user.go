@@ -9,9 +9,6 @@ import (
 
 // Create creates a new user account
 func (u *User) Create(c echo.Context, req go_blog.User) (*go_blog.User, error) {
-	if err := u.rbac.AccountCreate(c, req.RoleID); err != nil {
-		return nil, err
-	}
 	req.Password = u.sec.Hash(req.Password)
 	return u.udb.Create(u.db, req)
 }
@@ -40,7 +37,7 @@ func (u *User) Delete(c echo.Context, id int) error {
 	if err != nil {
 		return err
 	}
-	if err := u.rbac.IsLowerRole(c, user.Role.AccessLevel); err != nil {
+	if err := u.rbac.EnforceUser(c, id); err != nil {
 		return err
 	}
 	return u.udb.Delete(u.db, user)

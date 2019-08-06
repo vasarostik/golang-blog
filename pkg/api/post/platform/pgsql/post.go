@@ -46,8 +46,8 @@ func (u *Post) View(db orm.DB, id int) (*go_blog.Post, error) {
 }
 
 // Update updates user's contact info
-func (u *Post) Update(db orm.DB, user *go_blog.Post) error {
-	err := db.Update(user)
+func (u *Post) Update(db orm.DB, post *go_blog.Post) error {
+	_, err := db.Model(post).Where("id = ?",post.Base.ID).UpdateNotZero()
 	return err
 }
 

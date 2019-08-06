@@ -53,6 +53,4 @@ type UDB interface {
 type RBAC interface {
 	User(echo.Context) *go_blog.AuthUser
 	EnforceUser(echo.Context, int) error
-	AccountCreate(echo.Context, go_blog.AccessRole) error
-	IsLowerRole(echo.Context, go_blog.AccessRole) error
 }
