@@ -1,0 +1,20 @@
+syntax = "proto3";
+package service;
+
+
+service CreatePostZ {
+    // Create new Post
+    rpc Create(Post) returns (Response);
+
+}
+
+message Post {
+
+    bytes data = 1;
+}
+
+message Response {
+
+    int32 code = 1;
+
+}

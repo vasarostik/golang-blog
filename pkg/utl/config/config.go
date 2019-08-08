@@ -25,6 +25,8 @@ func Load(path string) (*Configuration, error) {
 type Configuration struct {
 	Server *Server      `yaml:"server,omitempty"`
 	DB     *Database    `yaml:"database,omitempty"`
+	Redis  *Redis    	`yaml:"redisdb,omitempty"`
+	GRPC   *GRPC		`yaml:"jrpc,omitempty"`
 	JWT    *JWT         `yaml:"jwt,omitempty"`
 	App    *Application `yaml:"application,omitempty"`
 }
@@ -57,4 +59,14 @@ type JWT struct {
 type Application struct {
 	MinPasswordStr int    `yaml:"min_password_strength,omitempty"`
 	SwaggerUIPath  string `yaml:"swagger_ui_path,omitempty"`
+}
+
+type Redis struct {
+	Addr     string `json:"addr"`
+	Password string `json:"password"`
+	DB       int    `json:"db"`
+}
+
+type GRPC struct {
+	Addr string `json:"addr"`
 }

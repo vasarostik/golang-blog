@@ -1,7 +1,7 @@
 {
   "name": "parcel-react-example",
   "version": "1.0.0",
-  "description": "Parcel Bundler Example with React",
+  "description": "Blog",
   "main": "index.js",
   "scripts": {
     "start": "parcel src/index.html",

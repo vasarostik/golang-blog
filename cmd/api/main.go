@@ -2,9 +2,7 @@ package main
 
 import (
 	"flag"
-
 	"github.com/vasarostik/go_blog/pkg/api"
-
 	"github.com/vasarostik/go_blog/pkg/utl/config"
 )
 
@@ -17,6 +15,8 @@ func main() {
 	checkErr(err)
 
 	checkErr(api.Start(cfg))
+
+
 }
 
 func checkErr(err error) {

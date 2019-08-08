@@ -18,4 +18,6 @@ jwt:
 
 application:
   min_password_strength: 1
-  swagger_ui_path: assets/swaggerui
+
+jrpc:
+  addr: :8081

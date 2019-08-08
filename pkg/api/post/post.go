@@ -1,12 +1,28 @@
 package post
 
 import (
+	"context"
+	"encoding/json"
 	"github.com/labstack/echo"
+	"github.com/vasarostik/go_blog/pkg/grpc/service"
 	go_blog "github.com/vasarostik/go_blog/pkg/utl/model"
+	"log"
 )
 
 // Create creates a new user account
 func (u *Post) Create(c echo.Context, req go_blog.Post) (*go_blog.Post, error) {
+
+	req.UserID = c.Get("id").(int)
+	marsh, err := json.Marshal(req)
+	if err != nil {
+		log.Println(err)
+	}
+
+	Resp,err := u.grpcClient.Create(context.Background(), &service.Post{Data: marsh})
+	if err != nil {
+		log.Println(err)
+	}
+	log.Println(Resp)
 
 	return u.udb.Create(u.db, req)
 }

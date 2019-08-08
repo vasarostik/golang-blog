@@ -5,6 +5,7 @@ import (
 	"github.com/go-pg/pg/orm"
 	"github.com/labstack/echo"
 	"github.com/vasarostik/go_blog/pkg/api/post/platform/pgsql"
+	"github.com/vasarostik/go_blog/pkg/grpc/service"
 	go_blog "github.com/vasarostik/go_blog/pkg/utl/model"
 )
 
@@ -19,13 +20,13 @@ type Service interface {
 }
 
 // New creates new user application service
-func New(db *pg.DB, udb UDB, rbac RBAC, sec Securer) *Post {
-	return &Post{db: db, udb: udb, rbac: rbac, sec: sec}
+func New(db *pg.DB, udb UDB, rbac RBAC, sec Securer, grpcClient service.CreatePostZClient) *Post {
+	return &Post{db: db, udb: udb, rbac: rbac, sec: sec, grpcClient: grpcClient}
 }
 
 // Initialize initalizes User application service with defaults
-func Initialize(db *pg.DB, rbac RBAC, sec Securer) *Post {
-	return New(db, pgsql.NewPost(), rbac, sec)
+func Initialize(db *pg.DB, rbac RBAC, sec Securer, grpcClient service.CreatePostZClient) *Post {
+	return New(db, pgsql.NewPost(), rbac, sec, grpcClient)
 }
 
 // User represents user application service
@@ -34,6 +35,7 @@ type Post struct {
 	udb  UDB
 	rbac RBAC
 	sec  Securer
+	grpcClient service.CreatePostZClient
 }
 
 // Securer represents security interface
