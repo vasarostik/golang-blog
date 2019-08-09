@@ -4,7 +4,6 @@ import (
 	"context"
 	"encoding/json"
 	"github.com/go-redis/redis"
-	"log"
 	"strconv"
 	"time"
 )
@@ -13,6 +12,10 @@ type BlogItem struct {
 	UserID 	 int 				`json:"id"`
 	Content  string             `json:"content"`
 	Title    string             `json:"title"`
+}
+
+type PostResp struct {
+
 }
 
 
@@ -35,12 +38,27 @@ func (s *Server) Create(ctx context.Context, in *Post) (*Response,error) {
 		//usrM := structs.Map(marshaled)
 		//sd := s.redisCon.HMSet("post:"+strconv.Itoa(marshaled.UserID),usrM)
 
-		sd := s.redisCon.ZAdd(strconv.Itoa(post.UserID),
+		_ = s.redisCon.ZAdd(strconv.Itoa(post.UserID),
 			&redis.Z{Score:float64(time.Now().Unix()),Member:in.Data})
 		resp = Response{Code: 200}
-		log.Println(sd)
+		//log.Println(sd)
 	}
 
 	return &resp,nil
 }
+
+func (s *Server) List(ctx context.Context, in *Request) (*PostList,error) {
+	var p = new(PostList)
+
+	posts, err := s.redisCon.ZRange(strconv.Itoa(int(in.UserID)), 0, -1).Result()
+
+	if err != nil {
+		panic(err)
+	}
+
+	p.Posts = posts
+
+	return p,nil
+}
+
 

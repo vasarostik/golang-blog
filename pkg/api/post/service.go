@@ -13,6 +13,7 @@ import (
 type Service interface {
 	Create(echo.Context, go_blog.Post) (*go_blog.Post, error)
 	MyList(echo.Context, int, *go_blog.Pagination) ([]go_blog.Post, error)
+	MyListGRPC(echo.Context, int, *go_blog.Pagination) ([]go_blog.Post, error)
 	List(echo.Context, *go_blog.Pagination) ([]go_blog.Post, error)
 	View(echo.Context, int) (*go_blog.Post, error)
 	Delete(echo.Context, int) error

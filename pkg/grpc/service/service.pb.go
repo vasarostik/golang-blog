@@ -63,6 +63,45 @@ func (m *Post) GetData() []byte {
 	return nil
 }
 
+type PostList struct {
+	Posts                []string `protobuf:"bytes,1,rep,name=posts,proto3" json:"posts,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *PostList) Reset()         { *m = PostList{} }
+func (m *PostList) String() string { return proto.CompactTextString(m) }
+func (*PostList) ProtoMessage()    {}
+func (*PostList) Descriptor() ([]byte, []int) {
+	return fileDescriptor_a0b84a42fa06f626, []int{1}
+}
+
+func (m *PostList) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_PostList.Unmarshal(m, b)
+}
+func (m *PostList) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_PostList.Marshal(b, m, deterministic)
+}
+func (m *PostList) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_PostList.Merge(m, src)
+}
+func (m *PostList) XXX_Size() int {
+	return xxx_messageInfo_PostList.Size(m)
+}
+func (m *PostList) XXX_DiscardUnknown() {
+	xxx_messageInfo_PostList.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_PostList proto.InternalMessageInfo
+
+func (m *PostList) GetPosts() []string {
+	if m != nil {
+		return m.Posts
+	}
+	return nil
+}
+
 type Response struct {
 	Code                 int32    `protobuf:"varint,1,opt,name=code,proto3" json:"code,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
@@ -74,7 +113,7 @@ func (m *Response) Reset()         { *m = Response{} }
 func (m *Response) String() string { return proto.CompactTextString(m) }
 func (*Response) ProtoMessage()    {}
 func (*Response) Descriptor() ([]byte, []int) {
-	return fileDescriptor_a0b84a42fa06f626, []int{1}
+	return fileDescriptor_a0b84a42fa06f626, []int{2}
 }
 
 func (m *Response) XXX_Unmarshal(b []byte) error {
@@ -102,23 +141,69 @@ func (m *Response) GetCode() int32 {
 	return 0
 }
 
+type Request struct {
+	UserID               int32    `protobuf:"varint,1,opt,name=UserID,json=userID,proto3" json:"UserID,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *Request) Reset()         { *m = Request{} }
+func (m *Request) String() string { return proto.CompactTextString(m) }
+func (*Request) ProtoMessage()    {}
+func (*Request) Descriptor() ([]byte, []int) {
+	return fileDescriptor_a0b84a42fa06f626, []int{3}
+}
+
+func (m *Request) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_Request.Unmarshal(m, b)
+}
+func (m *Request) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_Request.Marshal(b, m, deterministic)
+}
+func (m *Request) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_Request.Merge(m, src)
+}
+func (m *Request) XXX_Size() int {
+	return xxx_messageInfo_Request.Size(m)
+}
+func (m *Request) XXX_DiscardUnknown() {
+	xxx_messageInfo_Request.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_Request proto.InternalMessageInfo
+
+func (m *Request) GetUserID() int32 {
+	if m != nil {
+		return m.UserID
+	}
+	return 0
+}
+
 func init() {
 	proto.RegisterType((*Post)(nil), "service.Post")
+	proto.RegisterType((*PostList)(nil), "service.PostList")
 	proto.RegisterType((*Response)(nil), "service.Response")
+	proto.RegisterType((*Request)(nil), "service.Request")
 }
 
 func init() { proto.RegisterFile("service.proto", fileDescriptor_a0b84a42fa06f626) }
 
 var fileDescriptor_a0b84a42fa06f626 = []byte{
-	// 128 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xe2, 0xe2, 0x2d, 0x4e, 0x2d, 0x2a,
-	0xcb, 0x4c, 0x4e, 0xd5, 0x2b, 0x28, 0xca, 0x2f, 0xc9, 0x17, 0x62, 0x87, 0x72, 0x95, 0xa4, 0xb8,
-	0x58, 0x02, 0xf2, 0x8b, 0x4b, 0x84, 0x84, 0xb8, 0x58, 0x52, 0x12, 0x4b, 0x12, 0x25, 0x18, 0x15,
-	0x18, 0x35, 0x78, 0x82, 0xc0, 0x6c, 0x25, 0x39, 0x2e, 0x8e, 0xa0, 0xd4, 0xe2, 0x82, 0xfc, 0xbc,
-	0xe2, 0x54, 0x90, 0x7c, 0x72, 0x7e, 0x4a, 0x2a, 0x58, 0x9e, 0x35, 0x08, 0xcc, 0x36, 0xb2, 0xe4,
-	0xe2, 0x76, 0x2e, 0x4a, 0x4d, 0x2c, 0x49, 0x05, 0x99, 0x10, 0x25, 0xa4, 0xc5, 0xc5, 0x06, 0xe1,
-	0x0a, 0xf1, 0xea, 0xc1, 0x6c, 0x03, 0xc9, 0x48, 0x09, 0xc2, 0xb9, 0x30, 0xe3, 0x92, 0xd8, 0xc0,
-	0xce, 0x30, 0x06, 0x04, 0x00, 0x00, 0xff, 0xff, 0x3a, 0xf6, 0x9d, 0xbd, 0x97, 0x00, 0x00, 0x00,
+	// 197 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x4c, 0x8f, 0x3d, 0x8b, 0xc2, 0x40,
+	0x10, 0x86, 0x09, 0x97, 0x6c, 0x72, 0x73, 0x17, 0xb8, 0x5b, 0x44, 0x42, 0x0a, 0x89, 0x5b, 0x05,
+	0x85, 0x14, 0xfa, 0x13, 0xb4, 0x11, 0x2c, 0x64, 0xc1, 0xc6, 0x2e, 0x26, 0x23, 0xa4, 0x71, 0xe3,
+	0xce, 0xc6, 0xdf, 0x2f, 0xbb, 0xf9, 0x20, 0xdd, 0x3c, 0xbc, 0xc3, 0xfb, 0x01, 0x31, 0xa1, 0x7e,
+	0x37, 0x15, 0x16, 0xad, 0x56, 0x46, 0xf1, 0x70, 0x40, 0x91, 0x82, 0x7f, 0x51, 0x64, 0x38, 0x07,
+	0xbf, 0x2e, 0x4d, 0x99, 0x78, 0x99, 0x97, 0xff, 0x4a, 0x77, 0x8b, 0x0c, 0x22, 0xab, 0x9d, 0x1b,
+	0x32, 0x7c, 0x01, 0x41, 0xab, 0xc8, 0x50, 0xe2, 0x65, 0x5f, 0xf9, 0xb7, 0xec, 0x41, 0xac, 0x20,
+	0x92, 0x48, 0xad, 0x7a, 0x12, 0x5a, 0x87, 0x4a, 0xd5, 0xe8, 0x1c, 0x02, 0xe9, 0x6e, 0xb1, 0x86,
+	0x50, 0xe2, 0xab, 0x43, 0x32, 0x7c, 0x09, 0xec, 0x4a, 0xa8, 0x4f, 0xc7, 0xe1, 0x81, 0x75, 0x8e,
+	0x76, 0x0f, 0xf8, 0x39, 0x68, 0x2c, 0x0d, 0xda, 0xa8, 0x1b, 0xdf, 0x00, 0xeb, 0x91, 0xc7, 0xc5,
+	0x58, 0xd9, 0x2a, 0xe9, 0xff, 0x84, 0x53, 0xe2, 0x16, 0x7c, 0xd7, 0xed, 0x6f, 0x26, 0xb9, 0xb0,
+	0xd9, 0xf3, 0x38, 0xe0, 0xce, 0xdc, 0xf0, 0xfd, 0x27, 0x00, 0x00, 0xff, 0xff, 0xfd, 0xe4, 0x1d,
+	0x50, 0x09, 0x01, 0x00, 0x00,
 }
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -135,6 +220,7 @@ const _ = grpc.SupportPackageIsVersion4
 type CreatePostZClient interface {
 	// Create new Post
 	Create(ctx context.Context, in *Post, opts ...grpc.CallOption) (*Response, error)
+	List(ctx context.Context, in *Request, opts ...grpc.CallOption) (*PostList, error)
 }
 
 type createPostZClient struct {
@@ -154,10 +240,20 @@ func (c *createPostZClient) Create(ctx context.Context, in *Post, opts ...grpc.C
 	return out, nil
 }
 
+func (c *createPostZClient) List(ctx context.Context, in *Request, opts ...grpc.CallOption) (*PostList, error) {
+	out := new(PostList)
+	err := c.cc.Invoke(ctx, "/service.CreatePostZ/List", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // CreatePostZServer is the server API for CreatePostZ service.
 type CreatePostZServer interface {
 	// Create new Post
 	Create(context.Context, *Post) (*Response, error)
+	List(context.Context, *Request) (*PostList, error)
 }
 
 // UnimplementedCreatePostZServer can be embedded to have forward compatible implementations.
@@ -166,6 +262,9 @@ type UnimplementedCreatePostZServer struct {
 
 func (*UnimplementedCreatePostZServer) Create(ctx context.Context, req *Post) (*Response, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Create not implemented")
+}
+func (*UnimplementedCreatePostZServer) List(ctx context.Context, req *Request) (*PostList, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method List not implemented")
 }
 
 func RegisterCreatePostZServer(s *grpc.Server, srv CreatePostZServer) {
@@ -190,6 +289,24 @@ func _CreatePostZ_Create_Handler(srv interface{}, ctx context.Context, dec func(
 	return interceptor(ctx, in, info, handler)
 }
 
+func _CreatePostZ_List_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(Request)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(CreatePostZServer).List(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/service.CreatePostZ/List",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(CreatePostZServer).List(ctx, req.(*Request))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 var _CreatePostZ_serviceDesc = grpc.ServiceDesc{
 	ServiceName: "service.CreatePostZ",
 	HandlerType: (*CreatePostZServer)(nil),
@@ -197,6 +314,10 @@ var _CreatePostZ_serviceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "Create",
 			Handler:    _CreatePostZ_Create_Handler,
+		},
+		{
+			MethodName: "List",
+			Handler:    _CreatePostZ_List_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

@@ -54,6 +54,9 @@ func NewHTTP(svc post.Service, er *echo.Group) {
 	//   "500":
 	//     "$ref": "#/responses/err"
 	ur.GET("s/my", h.myList)
+	ur.GET("s/my/grpc", h.myListGRPC)
+
+
 	ur.GET("s", h.list)
 	//
 	//// swagger:operation GET /v1/users/{id} users getUser
@@ -167,7 +170,6 @@ func (h *HTTP) create(c echo.Context) error {
 
 type listResponse struct {
 	Posts []go_blog.Post `json:"posts"`
-	Page  int          `json:"page"`
 }
 
 
@@ -186,8 +188,27 @@ func (h *HTTP) myList(c echo.Context) error {
 		return err
 	}
 
-	return c.JSON(http.StatusOK, listResponse{result, p.Page})
+	return c.JSON(http.StatusOK, listResponse{result})
 }
+
+
+func (h *HTTP) myListGRPC(c echo.Context) error {
+
+	p := new(go_blog.PaginationReq)
+	if err := c.Bind(p); err != nil {
+		return err
+	}
+	id := c.Get("id").(int)
+
+	result, err := h.svc.MyListGRPC(c, id, p.Transform())
+
+	if err != nil {
+		return err
+	}
+
+	return c.JSON(http.StatusOK, listResponse{result})
+}
+
 
 func (h *HTTP) list(c echo.Context) error {
 
@@ -202,7 +223,7 @@ func (h *HTTP) list(c echo.Context) error {
 		return err
 	}
 
-	return c.JSON(http.StatusOK, listResponse{result, p.Page})
+	return c.JSON(http.StatusOK, listResponse{result})
 }
 
 func (h *HTTP) view(c echo.Context) error {

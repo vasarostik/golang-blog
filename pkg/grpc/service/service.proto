@@ -5,16 +5,30 @@ package service;
 service CreatePostZ {
     // Create new Post
     rpc Create(Post) returns (Response);
+    rpc List(Request) returns (PostList);
 
 }
 
 message Post {
 
-    bytes data = 1;
+     bytes data = 1;
 }
+
+
+message PostList {
+
+    repeated bytes posts = 1;
+}
+
 
 message Response {
 
     int32 code = 1;
+
+}
+
+message Request {
+
+    int32 UserID = 1;
 
 }

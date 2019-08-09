@@ -9,7 +9,7 @@ import (
 	"log"
 )
 
-// Create creates a new user account
+// Create creates a new post
 func (u *Post) Create(c echo.Context, req go_blog.Post) (*go_blog.Post, error) {
 
 	req.UserID = c.Get("id").(int)
@@ -28,7 +28,33 @@ func (u *Post) Create(c echo.Context, req go_blog.Post) (*go_blog.Post, error) {
 }
 
 // MyList returns list of user`s post
+func (u *Post) MyListGRPC(c echo.Context, id int, p *go_blog.Pagination) ([]go_blog.Post, error) {
+	var post go_blog.Post
+
+	var postList []go_blog.Post
+
+	posts,err := u.grpcClient.List(context.Background(), &service.Request{UserID: int32(id)})
+
+	if err != nil {
+		panic(err)
+	}
+
+	for i := range posts.Posts{
+
+		err = json.Unmarshal([]byte(posts.Posts[i]), &post)
+		if err != nil {
+			panic(err)
+		}
+
+		postList = append(postList, post)
+	}
+
+	return postList, nil
+}
+
+// MyList returns list of user`s post
 func (u *Post) MyList(c echo.Context, id int, p *go_blog.Pagination) ([]go_blog.Post, error) {
+
 
 	return u.udb.MyList(u.db, id, p)
 }
@@ -60,14 +86,14 @@ func (u *Post) Delete(c echo.Context, id int) error {
 }
 
 
-// Update contains user's information used for updating
+// Update contains post's information used for updating
 type Update struct {
-	PostID        int
+	PostID    int
 	Title string
 	Content string
 }
 
-// Update updates user's contact information
+// Update updates user's post information
 func (u *Post) Update(c echo.Context, r *Update) (*go_blog.Post, error) {
 	post, err := u.udb.View(u.db, r.PostID)
 

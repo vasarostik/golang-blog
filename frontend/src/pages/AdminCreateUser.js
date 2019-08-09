@@ -11,8 +11,6 @@ export class AdminCreateUser extends Component {
     this.handleFirstNameChange=this.handleFirstNameChange.bind(this);
     this.handleLastNameChange=this.handleLastNameChange.bind(this);
     this.handlePasswordConfirmChange=this.handlePasswordConfirmChange.bind(this);
-    this.handleRoleIDChange=this.handleRoleIDChange.bind(this);
-
     this.handleUsername=this.handleUsername.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handlePasswordChange = this.handlePasswordChange.bind(this);
@@ -52,7 +50,7 @@ export class AdminCreateUser extends Component {
             password_confirm: this.state.passwordConfirm
           });
 
-          const response = await fetch('http://localhost:8080/v1/users', {
+          const response = await fetch('http://localhost:8080/users', {
             method: 'POST',
             body: data,
             headers:{
@@ -106,9 +104,6 @@ export class AdminCreateUser extends Component {
     this.setState({ passwordConfirm: event.target.value })
   }
 
-  handleRoleIDChange(event) {
-    this.setState({ RoleID: event.target.value })
-  }
 
   render() {
 
@@ -141,9 +136,6 @@ export class AdminCreateUser extends Component {
                 <MDBInput label="Username" outline icon="envelope" onChange={this.handleUsername.bind(this)} required />
               </div>
 
-              <div className="reg-input">
-                <MDBInput label="Role ID (default 200-user)" outline icon="envelope" onChange={this.handleRoleIDChange.bind(this)} />
-              </div>
               <div className="reg-input">
                 <MDBInput label="Password" type="password" outline icon="fas fa-key" onChange={this.handlePasswordChange.bind(this)} required />
               </div>
