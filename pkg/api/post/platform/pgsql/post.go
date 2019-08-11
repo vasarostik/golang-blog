@@ -9,15 +9,15 @@ import (
 	go_blog "github.com/vasarostik/go_blog/pkg/utl/model"
 )
 
-// NewUser returns a new user database instance
+// NewPost returns a new post database instance
 func NewPost() *Post {
 	return &Post{}
 }
 
-// User represents the client for user table
+// Post represents the client for post table
 type Post struct{}
 
-// Create creates a new user on database
+// Create creates a new post on database
 func (u *Post) Create(db orm.DB, pst go_blog.Post) (*go_blog.Post, error) {
 	var post = new(go_blog.Post)
 	err := db.Model(post).Where("lower(title) = ? and deleted_at is null", strings.ToLower(pst.Title)).Select()
@@ -52,9 +52,9 @@ func (u *Post) Update(db orm.DB, post *go_blog.Post) error {
 }
 
 // MyList returns list of user`s posts
-func (u *Post) MyList(db orm.DB, qp int, p *go_blog.Pagination) ([]go_blog.Post, error) {
+func (u *Post) MyList(db orm.DB, qp int) ([]go_blog.Post, error) {
 	var posts []go_blog.Post
-	q := db.Model(&posts).Column("post.*").Limit(p.Limit).Offset(p.Offset).Where("deleted_at is null and user_id = ?",qp).Order("post.id desc")
+	q := db.Model(&posts).Column("post.*").Where("deleted_at is null and user_id = ?",qp).Order("post.id desc")
 
 	if err := q.Select(); err != nil {
 		return nil, err
@@ -63,9 +63,9 @@ func (u *Post) MyList(db orm.DB, qp int, p *go_blog.Pagination) ([]go_blog.Post,
 }
 
 // List returns list of all posts
-func (u *Post) List(db orm.DB, p *go_blog.Pagination) ([]go_blog.Post, error) {
+func (u *Post) List(db orm.DB,) ([]go_blog.Post, error) {
 	var posts []go_blog.Post
-	q := db.Model(&posts).Column("post.*").Limit(p.Limit).Offset(p.Offset).Where("deleted_at is null").Order("post.id desc")
+	q := db.Model(&posts).Column("post.*").Where("deleted_at is null").Order("post.id desc")
 
 	if err := q.Select(); err != nil {
 		return nil, err
@@ -73,7 +73,7 @@ func (u *Post) List(db orm.DB, p *go_blog.Pagination) ([]go_blog.Post, error) {
 	return posts, nil
 }
 
-// Delete sets deleted_at for a user
+// Delete sets deleted_at for a post
 func (u *Post) Delete(db orm.DB, post *go_blog.Post) error {
 	return db.Delete(post)
 }

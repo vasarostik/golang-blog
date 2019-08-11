@@ -42,19 +42,18 @@ func (ls *LogService) Create(c echo.Context, req go_blog.User) (resp *go_blog.Us
 }
 
 // List logging
-func (ls *LogService) List(c echo.Context, req *go_blog.Pagination) (resp []go_blog.User, err error) {
+func (ls *LogService) List(c echo.Context) (resp []go_blog.User, err error) {
 	defer func(begin time.Time) {
 		ls.logger.Log(
 			c,
 			name, "List user request", err,
 			map[string]interface{}{
-				"req":  req,
 				"resp": resp,
 				"took": time.Since(begin),
 			},
 		)
 	}(time.Now())
-	return ls.Service.List(c, req)
+	return ls.Service.List(c)
 }
 
 // View logging

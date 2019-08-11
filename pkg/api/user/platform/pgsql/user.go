@@ -53,9 +53,9 @@ func (u *User) Update(db orm.DB, user *go_blog.User) error {
 }
 
 // List returns list of all users
-func (u *User) List(db orm.DB, qp *go_blog.ListQuery, p *go_blog.Pagination) ([]go_blog.User, error) {
+func (u *User) List(db orm.DB, qp *go_blog.ListQuery) ([]go_blog.User, error) {
 	var users []go_blog.User
-	q := db.Model(&users).Column("user.*", "Role").Limit(p.Limit).Offset(p.Offset).Order("user.id desc")
+	q := db.Model(&users).Column("user.*", "Role").Order("user.id desc")
 	if qp != nil {
 		q.Where(qp.Query)
 	}

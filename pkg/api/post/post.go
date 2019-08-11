@@ -28,7 +28,7 @@ func (u *Post) Create(c echo.Context, req go_blog.Post) (*go_blog.Post, error) {
 }
 
 // MyList returns list of user`s post
-func (u *Post) MyListGRPC(c echo.Context, id int, p *go_blog.Pagination) ([]go_blog.Post, error) {
+func (u *Post) MyListGRPC(c echo.Context, id int) ([]go_blog.Post, error) {
 	var post go_blog.Post
 
 	var postList []go_blog.Post
@@ -53,16 +53,16 @@ func (u *Post) MyListGRPC(c echo.Context, id int, p *go_blog.Pagination) ([]go_b
 }
 
 // MyList returns list of user`s post
-func (u *Post) MyList(c echo.Context, id int, p *go_blog.Pagination) ([]go_blog.Post, error) {
+func (u *Post) MyList(c echo.Context, id int) ([]go_blog.Post, error) {
 
 
-	return u.udb.MyList(u.db, id, p)
+	return u.udb.MyList(u.db, id)
 }
 
 // List returns list of all post
-func (u *Post) List(c echo.Context, p *go_blog.Pagination) ([]go_blog.Post, error) {
+func (u *Post) List(c echo.Context) ([]go_blog.Post, error) {
 
-	return u.udb.List(u.db, p)
+	return u.udb.List(u.db)
 }
 
 // View returns single post

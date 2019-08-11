@@ -8,7 +8,7 @@ import (
 	"github.com/labstack/echo"
 )
 
-// New creates new user logging service
+// New creates new post logging service
 func New(svc post.Service, logger go_blog.Logger) *LogService {
 	return &LogService{
 		Service: svc,
@@ -43,35 +43,33 @@ func (ls *LogService) Create(c echo.Context, req go_blog.Post) (resp *go_blog.Po
 
 
 // List logging
-func (ls *LogService) MyList(c echo.Context, id int, req *go_blog.Pagination) (resp []go_blog.Post, err error) {
+func (ls *LogService) MyList(c echo.Context, id int) (resp []go_blog.Post, err error) {
 	defer func(begin time.Time) {
 		ls.logger.Log(
 			c,
 			name, "MyList post`s request", err,
 			map[string]interface{}{
-				"req":  req,
 				"resp": resp,
 				"took": time.Since(begin),
 			},
 		)
 	}(time.Now())
-	return ls.Service.MyList(c,id, req)
+	return ls.Service.MyList(c,id)
 }
 
 // List logging
-func (ls *LogService) List(c echo.Context, req *go_blog.Pagination) (resp []go_blog.Post, err error) {
+func (ls *LogService) List(c echo.Context) (resp []go_blog.Post, err error) {
 	defer func(begin time.Time) {
 		ls.logger.Log(
 			c,
 			name, "List post`s request", err,
 			map[string]interface{}{
-				"req":  req,
 				"resp": resp,
 				"took": time.Since(begin),
 			},
 		)
 	}(time.Now())
-	return ls.Service.List(c, req)
+	return ls.Service.List(c)
 }
 
 // View logging

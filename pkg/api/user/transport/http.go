@@ -184,22 +184,17 @@ func (h *HTTP) create(c echo.Context) error {
 
 type listResponse struct {
 	Users []go_blog.User `json:"users"`
-	Page  int          `json:"page"`
 }
 
 func (h *HTTP) list(c echo.Context) error {
-	p := new(go_blog.PaginationReq)
-	if err := c.Bind(p); err != nil {
-		return err
-	}
 
-	result, err := h.svc.List(c, p.Transform())
+	result, err := h.svc.List(c)
 
 	if err != nil {
 		return err
 	}
 
-	return c.JSON(http.StatusOK, listResponse{result, p.Page})
+	return c.JSON(http.StatusOK, listResponse{result})
 }
 
 func (h *HTTP) view(c echo.Context) error {

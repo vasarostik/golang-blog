@@ -14,13 +14,13 @@ func (u *User) Create(c echo.Context, req go_blog.User) (*go_blog.User, error) {
 }
 
 // List returns list of users
-func (u *User) List(c echo.Context, p *go_blog.Pagination) ([]go_blog.User, error) {
+func (u *User) List(c echo.Context) ([]go_blog.User, error) {
 	au := u.rbac.User(c)
 	q, err := query.List(au)
 	if err != nil {
 		return nil, err
 	}
-	return u.udb.List(u.db, q, p)
+	return u.udb.List(u.db, q)
 }
 
 // View returns single user

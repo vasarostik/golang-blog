@@ -11,7 +11,7 @@ import (
 // Service represents user application interface
 type Service interface {
 	Create(echo.Context, go_blog.User) (*go_blog.User, error)
-	List(echo.Context, *go_blog.Pagination) ([]go_blog.User, error)
+	List(echo.Context) ([]go_blog.User, error)
 	View(echo.Context, int) (*go_blog.User, error)
 	Delete(echo.Context, int) error
 	Update(echo.Context, *Update) (*go_blog.User, error)
@@ -44,7 +44,7 @@ type Securer interface {
 type UDB interface {
 	Create(orm.DB, go_blog.User) (*go_blog.User, error)
 	View(orm.DB, int) (*go_blog.User, error)
-	List(orm.DB, *go_blog.ListQuery, *go_blog.Pagination) ([]go_blog.User, error)
+	List(orm.DB, *go_blog.ListQuery) ([]go_blog.User, error)
 	Update(orm.DB, *go_blog.User) error
 	Delete(orm.DB, *go_blog.User) error
 }

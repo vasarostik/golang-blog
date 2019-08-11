@@ -54,6 +54,7 @@ func NewHTTP(svc post.Service, er *echo.Group) {
 	//   "500":
 	//     "$ref": "#/responses/err"
 	ur.GET("s/my", h.myList)
+
 	ur.GET("s/my/grpc", h.myListGRPC)
 
 
@@ -138,7 +139,6 @@ func NewHTTP(svc post.Service, er *echo.Group) {
 }
 
 
-// User create request
 // swagger:model userCreate
 type createReq struct {
 	Title string `json:"title"`
@@ -155,7 +155,7 @@ func (h *HTTP) create(c echo.Context) error {
 	}
 	id := c.Get("id").(int)
 
-	usr, err := h.svc.Create(c, go_blog.Post{
+	post, err := h.svc.Create(c, go_blog.Post{
 		Title:   r.Title,
 		Content:   r.Content,
 		UserID: id,
@@ -165,7 +165,7 @@ func (h *HTTP) create(c echo.Context) error {
 		return err
 	}
 
-	return c.JSON(http.StatusOK, usr)
+	return c.JSON(http.StatusOK, post)
 }
 
 type listResponse struct {
@@ -176,13 +176,9 @@ type listResponse struct {
 
 func (h *HTTP) myList(c echo.Context) error {
 
-	p := new(go_blog.PaginationReq)
-	if err := c.Bind(p); err != nil {
-		return err
-	}
 	id := c.Get("id").(int)
 
-	result, err := h.svc.MyList(c, id, p.Transform())
+	result, err := h.svc.MyList(c, id)
 
 	if err != nil {
 		return err
@@ -194,13 +190,9 @@ func (h *HTTP) myList(c echo.Context) error {
 
 func (h *HTTP) myListGRPC(c echo.Context) error {
 
-	p := new(go_blog.PaginationReq)
-	if err := c.Bind(p); err != nil {
-		return err
-	}
 	id := c.Get("id").(int)
 
-	result, err := h.svc.MyListGRPC(c, id, p.Transform())
+	result, err := h.svc.MyListGRPC(c, id)
 
 	if err != nil {
 		return err
@@ -212,12 +204,7 @@ func (h *HTTP) myListGRPC(c echo.Context) error {
 
 func (h *HTTP) list(c echo.Context) error {
 
-	p := new(go_blog.PaginationReq)
-	if err := c.Bind(p); err != nil {
-		return err
-	}
-
-	result, err := h.svc.List(c, p.Transform())
+	result, err := h.svc.List(c)
 
 	if err != nil {
 		return err
@@ -240,7 +227,6 @@ func (h *HTTP) view(c echo.Context) error {
 	return c.JSON(http.StatusOK, result)
 }
 
-// User update request
 // swagger:model userUpdate
 type updateReq struct {
 	ID        int    `json:"-"`
@@ -259,7 +245,7 @@ func (h *HTTP) update(c echo.Context) error {
 		return err
 	}
 
-	usr, err := h.svc.Update(c, &post.Update{
+	post, err := h.svc.Update(c, &post.Update{
 		PostID:        id,
 		Title: req.FTitle,
 		Content:  req.Content,
@@ -269,7 +255,7 @@ func (h *HTTP) update(c echo.Context) error {
 		return err
 	}
 
-	return c.JSON(http.StatusOK, usr)
+	return c.JSON(http.StatusOK, post)
 }
 //
 func (h *HTTP) delete(c echo.Context) error {
