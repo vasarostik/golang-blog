@@ -1,34 +1,3 @@
-// Copyright 2017 Emir Ribic. All rights reserved.
-// Use of this source code is governed by an MIT-style
-// license that can be found in the LICENSE file.
-
-// go_blog - Go(lang) restful starter kit
-//
-// API Docs for go_blog v1
-//
-// 	 Terms Of Service:  N/A
-//     Schemes: http
-//     Version: 2.0.0
-//     License: MIT http://opensource.org/licenses/MIT
-//     Contact: Emir Ribic <vasarostik@gmail.com> https://vasarostik.ba
-//     Host: localhost:8080
-//
-//     Consumes:
-//     - application/json
-//
-//     Produces:
-//     - application/json
-//
-//     Security:
-//     - bearer: []
-//
-//     SecurityDefinitions:
-//     bearer:
-//          type: apiKey
-//          name: Authorization
-//          in: header
-//
-// swagger:meta
 package api
 
 import (

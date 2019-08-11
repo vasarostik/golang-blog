@@ -7,7 +7,6 @@ import (
 	"os/signal"
 	"time"
 
-	"github.com/go-playground/validator"
 	"github.com/labstack/echo/middleware"
 	"github.com/vasarostik/go_blog/pkg/utl/middleware/secure"
 
@@ -20,10 +19,8 @@ func New() *echo.Echo {
 	e.Use(middleware.Logger(), middleware.Recover(),
 		secure.CORS(), secure.Headers())
 	e.GET("/", healthCheck)
-	e.Validator = &CustomValidator{V: validator.New()}
 	custErr := &customErrHandler{e: e}
 	e.HTTPErrorHandler = custErr.handler
-	e.Binder = &CustomBinder{b: &echo.DefaultBinder{}}
 	return e
 }
 
