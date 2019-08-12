@@ -4,6 +4,7 @@ import (
 	"github.com/go-pg/pg"
 	"github.com/go-pg/pg/orm"
 	"github.com/labstack/echo"
+	"github.com/nats-io/go-nats"
 	"github.com/vasarostik/go_blog/pkg/api/post/platform/pgsql"
 	"github.com/vasarostik/go_blog/pkg/grpc/service"
 	go_blog "github.com/vasarostik/go_blog/pkg/utl/model"
@@ -18,16 +19,17 @@ type Service interface {
 	View(echo.Context, int) (*go_blog.Post, error)
 	Delete(echo.Context, int) error
 	Update(echo.Context, *Update) (*go_blog.Post, error)
+	PublishMessage(string, go_blog.PublishPostMessage) error
 }
 
 // New creates new user application service
-func New(db *pg.DB, udb UDB, rbac RBAC, sec Securer, grpcClient service.CreatePostZClient) *Post {
-	return &Post{db: db, udb: udb, rbac: rbac, sec: sec, grpcClient: grpcClient}
+func New(db *pg.DB, udb UDB, rbac RBAC, sec Securer, grpcClient service.CreatePostZClient, natsClient *nats.Conn) *Post {
+	return &Post{db: db, udb: udb, rbac: rbac, sec: sec, grpcClient: grpcClient, natsClient:natsClient}
 }
 
 // Initialize initalizes User application service with defaults
-func Initialize(db *pg.DB, rbac RBAC, sec Securer, grpcClient service.CreatePostZClient) *Post {
-	return New(db, pgsql.NewPost(), rbac, sec, grpcClient)
+func Initialize(db *pg.DB, rbac RBAC, sec Securer, grpcClient service.CreatePostZClient,natsClient *nats.Conn) *Post {
+	return New(db, pgsql.NewPost(), rbac, sec, grpcClient, natsClient)
 }
 
 // User represents user application service
@@ -37,7 +39,10 @@ type Post struct {
 	rbac RBAC
 	sec  Securer
 	grpcClient service.CreatePostZClient
+	natsClient *nats.Conn
 }
+
+
 
 // Securer represents security interface
 type Securer interface {

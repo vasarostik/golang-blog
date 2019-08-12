@@ -2,6 +2,7 @@ package api
 
 import (
 	"crypto/sha1"
+	"github.com/nats-io/go-nats"
 
 	"github.com/vasarostik/go_blog/pkg/utl/zlog"
 
@@ -46,6 +47,11 @@ func Start(cfg *config.Configuration) error {
 		return err
 	}
 
+	natsClient, err := nats.Connect(cfg.NATS_Server.Addr)
+
+	if err != nil {
+		return err
+	}
 
 
 	e.Static("/swaggerui", cfg.App.SwaggerUIPath)
@@ -57,7 +63,7 @@ func Start(cfg *config.Configuration) error {
 
 	ut.NewHTTP(ul.New(user.Initialize(db, rbac, sec), log), v1, e)
 	pt.NewHTTP(pl.New(password.Initialize(db, rbac, sec), log), v1)
-	pst.NewHTTP(psl.New(post.Initialize(db, rbac, sec, GRPCclient), log), v1)
+	pst.NewHTTP(psl.New(post.Initialize(db, rbac, sec, GRPCclient, natsClient), log), v1)
 
 	server.Start(e, &server.Config{
 		Port:                cfg.Server.Port,

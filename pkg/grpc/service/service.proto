@@ -17,7 +17,7 @@ message Post {
 
 message PostList {
 
-    repeated bytes posts = 1;
+    repeated string posts = 1;
 }
 
 

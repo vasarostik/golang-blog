@@ -4,9 +4,16 @@ import (
 	"context"
 	"encoding/json"
 	"github.com/labstack/echo"
+	"github.com/pkg/errors"
 	"github.com/vasarostik/go_blog/pkg/grpc/service"
 	go_blog "github.com/vasarostik/go_blog/pkg/utl/model"
 	"log"
+	"time"
+)
+
+
+const (
+	topicPublishPost = "posts:publish"
 )
 
 // Create creates a new post
@@ -14,22 +21,41 @@ func (u *Post) Create(c echo.Context, req go_blog.Post) (*go_blog.Post, error) {
 
 	req.UserID = c.Get("id").(int)
 	marsh, err := json.Marshal(req)
-	if err != nil {
-		log.Println(err)
-	}
+
+	checkErr(err)
 
 	Resp,err := u.grpcClient.Create(context.Background(), &service.Post{Data: marsh})
+
 	if err != nil {
 		log.Println(err)
 	}
+
+
+
+
 	log.Println(Resp)
 
-	return u.udb.Create(u.db, req)
+	res, err := u.udb.Create(u.db, req)
+
+	checkErr(err)
+
+	message := &go_blog.PublishPostMessage{
+		PostID: res.ID,
+		Timestamp: time.Now().Format(time.RFC850),
+		Action: "Create",
+	}
+
+	if err := u.PublishMessage(topicPublishPost, *message); err != nil {
+		panic(err)
+	}
+
+	return res, nil
 }
+
 
 // MyList returns list of user`s post
 func (u *Post) MyListGRPC(c echo.Context, id int) ([]go_blog.Post, error) {
-	var post go_blog.Post
+	var postStruct go_blog.Post
 
 	var postList []go_blog.Post
 
@@ -41,15 +67,36 @@ func (u *Post) MyListGRPC(c echo.Context, id int) ([]go_blog.Post, error) {
 
 	for i := range posts.Posts{
 
-		err = json.Unmarshal([]byte(posts.Posts[i]), &post)
+		err = json.Unmarshal([]byte(posts.Posts[i]), &postStruct)
 		if err != nil {
 			panic(err)
 		}
 
-		postList = append(postList, post)
+		postList = append(postList, postStruct)
 	}
 
 	return postList, nil
+}
+
+func (u *Post) PublishMessage(topic string, msg go_blog.PublishPostMessage) error {
+	bs, err := json.Marshal(msg)
+	if err != nil {
+		return errors.Wrap(err, "failed to marshal proto message")
+	}
+
+	if err := u.natsClient.Publish(topicPublishPost, bs); err != nil {
+		return errors.Wrap(err, "failed to publish message")
+	}
+
+	if err := u.natsClient.Flush(); err != nil {
+		return errors.Wrap(err, "failed to flush message")
+	}
+
+	if err := u.natsClient.LastError(); err != nil {
+		return errors.Wrap(err, "received error after publishing")
+	}
+
+	return nil
 }
 
 // MyList returns list of user`s post
@@ -73,16 +120,30 @@ func (u *Post) View(c echo.Context, id int) (*go_blog.Post, error) {
 
 //Delete deletes a post (only user`s post or another posts if this is admin)
 func (u *Post) Delete(c echo.Context, id int) error {
-	post, err := u.udb.View(u.db, id)
+	postStruct, err := u.udb.View(u.db, id)
 	if err != nil {
 		return err
 	}
 
-	if err := u.rbac.EnforceUser(c, post.UserID); err != nil {
+	if err := u.rbac.EnforceUser(c, postStruct.UserID); err != nil {
 		return err
 	}
 
-	return u.udb.Delete(u.db, post)
+	err = u.udb.Delete(u.db, postStruct)
+
+	checkErr(err)
+
+	message := &go_blog.PublishPostMessage{
+		PostID: id,
+		Timestamp: time.Now().Format(time.RFC850),
+		Action: "Delete",
+	}
+
+	if err := u.PublishMessage(topicPublishPost, *message); err != nil {
+		panic(err)
+	}
+
+	return nil
 }
 
 
@@ -95,25 +156,45 @@ type Update struct {
 
 // Update updates user's post information
 func (u *Post) Update(c echo.Context, r *Update) (*go_blog.Post, error) {
-	post, err := u.udb.View(u.db, r.PostID)
+	postStruct, err := u.udb.View(u.db, r.PostID)
 
 	if err != nil {
 		return nil,err
 	}
 
-	if err := u.rbac.EnforceUser(c, post.UserID); err != nil {
+	if err := u.rbac.EnforceUser(c, postStruct.UserID); err != nil {
 		return nil, err
 	}
 
 	if err := u.udb.Update(u.db, &go_blog.Post{
 		Base:      go_blog.Base{ID: r.PostID},
-		UserID: post.UserID,
+		UserID: postStruct.UserID,
 		Title: r.Title,
 		Content:  r.Content,
 	}); err != nil {
 		return nil, err
 	}
 
-	return u.udb.View(u.db, r.PostID)
+	res, err := u.udb.View(u.db, r.PostID)
+
+	checkErr(err)
+
+	message := &go_blog.PublishPostMessage{
+		PostID: res.ID,
+		Timestamp: time.Now().Format(time.RFC850),
+		Action: "Update",
+	}
+
+	if err := u.PublishMessage(topicPublishPost, *message); err != nil {
+		panic(err)
+	}
+
+	return res,nil
 }
 
+
+func checkErr(err error) {
+	if err != nil {
+		panic(err.Error())
+	}
+}

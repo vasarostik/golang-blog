@@ -27,6 +27,8 @@ type Configuration struct {
 	DB     *Database    `yaml:"database,omitempty"`
 	Redis  *Redis    	`yaml:"redisdb,omitempty"`
 	GRPC   *GRPC		`yaml:"jrpc,omitempty"`
+	NATS_Server   	*NATS_Server		`yaml:"nats_server,omitempty"`
+	NATS_Subscriber	*NATS_Subscriber `yaml:"nats_subscriber,omitempty"`
 	JWT    *JWT         `yaml:"jwt,omitempty"`
 	App    *Application `yaml:"application,omitempty"`
 }
@@ -69,4 +71,13 @@ type Redis struct {
 
 type GRPC struct {
 	Addr string `json:"addr"`
+}
+
+type NATS_Server struct {
+	Addr string `json:"addr"`
+}
+
+type NATS_Subscriber struct {
+	Addr string `json:"addr"`
+	Subject string `json:"subject"`
 }

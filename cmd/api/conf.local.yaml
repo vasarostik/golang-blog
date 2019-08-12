@@ -21,3 +21,6 @@ application:
 
 jrpc:
   addr: :8081
+
+nats_server:
+  addr:     "localhost:4222"

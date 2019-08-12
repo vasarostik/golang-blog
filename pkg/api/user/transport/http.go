@@ -158,7 +158,6 @@ func (h *HTTP) create(c echo.Context) error {
 
 		return err
 	}
-
 	if r.Password != r.PasswordConfirm {
 		return go_blog.ErrPasswordsNotMaching
 	}

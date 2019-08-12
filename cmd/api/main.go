@@ -15,8 +15,6 @@ func main() {
 	checkErr(err)
 
 	checkErr(api.Start(cfg))
-
-
 }
 
 func checkErr(err error) {

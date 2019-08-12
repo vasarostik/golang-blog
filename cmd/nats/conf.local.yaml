@@ -1,0 +1,7 @@
+nats_server:
+  addr:     "localhost:4222"
+
+nats_subscriber:
+  addr:     "localhost:8000"
+  subject: "posts:publish"
+

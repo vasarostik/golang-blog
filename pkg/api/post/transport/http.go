@@ -138,6 +138,9 @@ func NewHTTP(svc post.Service, er *echo.Group) {
 	ur.DELETE("/:id", h.delete)
 }
 
+const (
+	topicPublishPost = "posts:publish"
+)
 
 // swagger:model userCreate
 type createReq struct {
@@ -155,7 +158,7 @@ func (h *HTTP) create(c echo.Context) error {
 	}
 	id := c.Get("id").(int)
 
-	post, err := h.svc.Create(c, go_blog.Post{
+	postCreated, err := h.svc.Create(c, go_blog.Post{
 		Title:   r.Title,
 		Content:   r.Content,
 		UserID: id,
@@ -165,7 +168,7 @@ func (h *HTTP) create(c echo.Context) error {
 		return err
 	}
 
-	return c.JSON(http.StatusOK, post)
+	return c.JSON(http.StatusOK, postCreated)
 }
 
 type listResponse struct {
