@@ -80,4 +80,5 @@ type NATS_Server struct {
 type NATS_Subscriber struct {
 	Addr string `json:"addr"`
 	Subject string `json:"subject"`
+	LogFile string `json:"logfile"`
 }

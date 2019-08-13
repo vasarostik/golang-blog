@@ -2,15 +2,15 @@ package nats
 
 import (
 	"encoding/json"
-	"fmt"
 	"github.com/jinzhu/gorm"
 	"github.com/nats-io/go-nats"
 	"github.com/vasarostik/go_blog/pkg/utl/config"
 	"github.com/vasarostik/go_blog/pkg/utl/model"
 	"log"
+	"os"
 )
 
-func Start(cfg *config.Configuration, natsClient *nats.Conn, db *gorm.DB) error {
+func Start(cfg *config.Configuration, natsClient *nats.Conn, db *gorm.DB, logfile *os.File) error {
 
 	var message = new(go_blog.PublishPostMessage)
 
@@ -22,10 +22,16 @@ func Start(cfg *config.Configuration, natsClient *nats.Conn, db *gorm.DB) error 
 
 		post := GetPost(db,message.PostID)
 
-		fmt.Printf("Received a message - (Title:%s, PostID:%d, UserID:%d, Content:%s, Action:%s, TimeOfAction: %s)\n", post.Title, message.PostID, post.UserID, post.Content, message.Action, message.Timestamp)
+		err := WriteInFile(logfile, post, *message)
+
+		if err != nil {
+			panic(err)
+		}
 
 	}); err != nil {
 		log.Fatalf("Failed to start subscription on '%s': %v", cfg.NATS_Subscriber.Subject, err)
+	} else {
+
 	}
 
 	return nil

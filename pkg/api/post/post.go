@@ -30,9 +30,6 @@ func (u *Post) Create(c echo.Context, req go_blog.Post) (*go_blog.Post, error) {
 		log.Println(err)
 	}
 
-
-
-
 	log.Println(Resp)
 
 	res, err := u.udb.Create(u.db, req)
@@ -41,8 +38,9 @@ func (u *Post) Create(c echo.Context, req go_blog.Post) (*go_blog.Post, error) {
 
 	message := &go_blog.PublishPostMessage{
 		PostID: res.ID,
+		UserID: res.UserID,
 		Timestamp: time.Now().Format(time.RFC850),
-		Action: "Create",
+		Action: "created",
 	}
 
 	if err := u.PublishMessage(topicPublishPost, *message); err != nil {
@@ -135,8 +133,9 @@ func (u *Post) Delete(c echo.Context, id int) error {
 
 	message := &go_blog.PublishPostMessage{
 		PostID: id,
+		UserID: postStruct.UserID,
 		Timestamp: time.Now().Format(time.RFC850),
-		Action: "Delete",
+		Action: "deleted",
 	}
 
 	if err := u.PublishMessage(topicPublishPost, *message); err != nil {
@@ -167,7 +166,7 @@ func (u *Post) Update(c echo.Context, r *Update) (*go_blog.Post, error) {
 	}
 
 	if err := u.udb.Update(u.db, &go_blog.Post{
-		Base:      go_blog.Base{ID: r.PostID},
+		Base:   go_blog.Base{ID: r.PostID},
 		UserID: postStruct.UserID,
 		Title: r.Title,
 		Content:  r.Content,
@@ -181,8 +180,9 @@ func (u *Post) Update(c echo.Context, r *Update) (*go_blog.Post, error) {
 
 	message := &go_blog.PublishPostMessage{
 		PostID: res.ID,
+		UserID: res.UserID,
 		Timestamp: time.Now().Format(time.RFC850),
-		Action: "Update",
+		Action: "updated",
 	}
 
 	if err := u.PublishMessage(topicPublishPost, *message); err != nil {

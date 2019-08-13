@@ -42,8 +42,6 @@ type Post struct {
 	natsClient *nats.Conn
 }
 
-
-
 // Securer represents security interface
 type Securer interface {
 	Hash(string) string

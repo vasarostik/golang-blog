@@ -7,6 +7,7 @@ import (
 	nats_service "github.com/vasarostik/go_blog/pkg/nats"
 	"github.com/vasarostik/go_blog/pkg/utl/config"
 	"github.com/vasarostik/go_blog/pkg/utl/gorm"
+	"github.com/vasarostik/go_blog/pkg/utl/logfile"
 
 	"log"
 	"net/http"
@@ -25,30 +26,26 @@ func main() {
 
 	if err != nil {
 		log.Fatalf("Can't connect to %s: %v\n", cfg.NATS_Server.Addr, err)
+	} else {
+		log.Println("Started subscription on ", cfg.NATS_Subscriber.Subject)
 	}
-
-	log.Println("Started subscription on ", cfg.NATS_Subscriber.Subject)
 
 	db, err := gorm.New()
 	checkErr(err)
+	defer db.Close()
 
-	err = nats_service.Start(cfg,natsClient,db)
+
+	file,err := logfile.New(cfg)
 	checkErr(err)
+	defer file.Close()
 
+	err = nats_service.Start(cfg,natsClient,db,file)
+	checkErr(err)
 
 	r := mux.NewRouter()
 	if err := http.ListenAndServe(cfg.NATS_Subscriber.Addr, r); err != nil {
 		log.Fatal(err)
 	}
-
-	defer db.Close()
-
-
-	//db.Where("id = ?",117).Find(&post)
-
-
-
-
 }
 
 func checkErr(err error) {
