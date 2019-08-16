@@ -36,6 +36,8 @@ func main() {
 	exists,err = db.Model(&go_blog.User{}).Exists()
 	exists,err = db.Model(&go_blog.Post{}).Exists()
 
+	fmt.Printf("DB tables exists: %t \n",exists)
+
 	if (exists == false) {
 
 		dbInsert := `
@@ -56,6 +58,7 @@ func main() {
 		userInsert := `INSERT INTO public.users (id, created_at, updated_at, first_name, last_name, username, password, active, role_id) VALUES (1, now(),now(),'Admin', 'Admin', 'admin', '%s', true, 100);`
 		_, err = db.Exec(fmt.Sprintf(userInsert, sec.Hash("admin")))
 		checkErr(err)
+		println("Migration completed successfully!")
 	}
 }
 
