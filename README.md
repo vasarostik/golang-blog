@@ -1,9 +1,16 @@
-Blog written in Golang, using technologies: 
+**Blog is written in Golang, using :**
  - GORSK Restful Starter Kit
  - gRPC
  - GORM
  - NATS Messaging System
  - React JS
 
-To start project run : $ docker-compose up --build
+**To start project run :**
+- Install Docker with Docker Compose
+- Build and run all images, using terminal :
+-       - $ docker-compose up --build  
+- Visit your host http://localhost:1234 and Log in as admin :
+-       Username: admin
+        Password: admin
+
 
