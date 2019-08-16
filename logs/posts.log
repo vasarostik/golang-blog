@@ -5,3 +5,7 @@ User with ID '4' has updated a post with ID '149' at 'Tuesday, 13-Aug-19 15:14:4
 User with ID '4' has deleted a post with ID '149' at 'Tuesday, 13-Aug-19 15:17:22 EEST'
 User with ID '1' has created a post with ID '150' at 'Tuesday, 13-Aug-19 15:44:48 EEST': 	 Title: 'Bike expo' , Content: 'Download the React DevTools'
 User with ID '1' has updated a post with ID '150' at 'Tuesday, 13-Aug-19 15:45:50 EEST': 	 Title: 'Bike expo#1' , Content: 'it`s about bikes'
+User with ID '1' has created a post with ID '2' at 'Friday, 16-Aug-19 12:38:34 UTC': 	 Title: 'rostik' , Content: 'dodik'
+User with ID '2' has created a post with ID '3' at 'Friday, 16-Aug-19 12:40:17 UTC': 	 Title: 'it`s Friday' , Content: 'Yeap'
+User with ID '2' has created a post with ID '4' at 'Friday, 16-Aug-19 12:43:24 UTC': 	 Title: 'volume' , Content: 'is DONE!'
+User with ID '2' has updated a post with ID '4' at 'Friday, 16-Aug-19 12:43:59 UTC': 	 Title: 'VOLUME' , Content: 'IS DONE'
