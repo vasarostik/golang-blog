@@ -1,7 +1,6 @@
 package postgres
+
 import (
-	"context"
-	"log"
 	"time"
 
 	"github.com/go-pg/pg"
@@ -11,12 +10,12 @@ import (
 
 type dbLogger struct{}
 
-func (d dbLogger) BeforeQuery(ctx context.Context , pg *pg.QueryEvent)(context.Context, error) { return ctx, nil}
-
-func (d dbLogger) AfterQuery(ctx context.Context, q *pg.QueryEvent)(context.Context, error) {
-	log.Printf(q.FormattedQuery())
-	return ctx, nil
-}
+//func (d dbLogger) BeforeQuery(ctx context.Context , pg *pg.QueryEvent)(context.Context, error) { return ctx, nil}
+//
+//func (d dbLogger) AfterQuery(ctx context.Context, q *pg.QueryEvent)(context.Context, error) {
+//	log.Printf(q.FormattedQuery())
+//	return ctx, nil
+//}
 
 // New creates new database connection to a postgres database
 func New(psn string, timeout int, enableLog bool) (*pg.DB, error) {
@@ -36,9 +35,7 @@ func New(psn string, timeout int, enableLog bool) (*pg.DB, error) {
 		db.WithTimeout(time.Second * time.Duration(timeout))
 	}
 
-	if enableLog {
-		db.AddQueryHook(dbLogger{})
-	}
+
 
 	return db, nil
 }

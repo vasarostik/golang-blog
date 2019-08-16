@@ -50,7 +50,7 @@ func Start(cfg *config.Configuration) error {
 	natsClient, err := nats.Connect(cfg.NATS_Server.Addr)
 
 	if err != nil {
-		return err
+		println(err)
 	}
 
 

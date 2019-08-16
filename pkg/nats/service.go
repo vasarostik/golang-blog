@@ -21,6 +21,7 @@ func Start(cfg *config.Configuration, natsClient *nats.Conn, db *gorm.DB, logfil
 		}
 
 		post := GetPost(db,message.PostID)
+		log.Printf("Action: Post with id '%d' was %s now", message.PostID , message.Action)
 
 		err := WriteInFile(logfile, post, *message)
 

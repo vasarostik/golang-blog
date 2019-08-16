@@ -5,3 +5,5 @@ Blog written in Golang, using technologies:
  - NATS Messaging System
  - React JS
 
+To start project run : $ docker-compose up --build
+

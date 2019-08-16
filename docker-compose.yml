@@ -1,0 +1,82 @@
+version: '3'
+
+# Define services
+services:
+  # App Service
+  app:
+    # Configuration for building the docker image for the service
+    build:
+      context: . # Use an image built from the specified dockerfile in the current directory.
+      dockerfile: cmd/api/Dockerfile
+    ports:
+      - "8080:8080" # Forward the exposed port 8080 on the container to port 8080 on the host machine
+    volumes:
+      - .pkg:/pkg
+    depends_on:
+      - db # This service depends on db. Start that first.
+      - grpc
+      - nats-server
+
+  # GRPC Service
+  grpc:
+    build:
+      context: .
+      dockerfile: cmd/grpc/Dockerfile
+    ports:
+      - "8081:8081"
+    depends_on:
+      - redis
+
+  # DB Service (Postgres)
+  db:
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: example
+    volumes:
+      - mydbdata:/var/lib/postgresql/data
+
+  # Redis Service
+  redis:
+    image: 'redis:alpine'
+    environment:
+      - ALLOW_EMPTY_PASSWORD=yes
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_storage:/data
+    entrypoint: redis-server
+
+  # Nats Subscriber Service
+  nats-subscriber:
+    # Configuration for building the docker image for the service
+    build:
+      context: . # Use an image built from the specified dockerfile in the current directory.
+      dockerfile: cmd/nats/Dockerfile
+    ports:
+      - "8000:8000" # Forward the exposed port 8080 on the container to port 8080 on the host machine
+    depends_on:
+      - nats-server
+      - db
+
+  # Nats Server Service
+  nats-server:
+    image: 'nats'
+    hostname: nats-server
+
+  # React UI Service
+  ui:
+    build:
+      context: . # Use an image built from the specified dockerfile in the current directory.
+      dockerfile: frontend/Dockerfile
+    ports:
+      - "3000:1234" # Forward the exposed port 8080 on the container to port 8080 on the host machine
+    environment:
+      - NODE_ENV=development
+    depends_on:
+      - app # This service depends on redis. Start that first.
+    command: npm start
+
+volumes:
+  mydbdata:
+  redis_storage:

@@ -81,4 +81,5 @@ type NATS_Subscriber struct {
 	Addr string `json:"addr"`
 	Subject string `json:"subject"`
 	LogFile string `json:"logfile"`
+	PSN        string `yaml:"psn,omitempty"`
 }

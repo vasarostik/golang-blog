@@ -1,7 +1,7 @@
 database:
   log_queries: true
   timeout_seconds: 5
-  psn: postgres://postgres:l@localhost:5432/postgres
+  psn: postgres://postgres:example@db:5432/postgres?sslmode=disable
 
 server:
   port: :8080
@@ -20,7 +20,7 @@ application:
   min_password_strength: 1
 
 jrpc:
-  addr: :8081
+  addr: grpc:8081
 
 nats_server:
-  addr:     "localhost:4222"
+  addr:     "nats-server:4222"

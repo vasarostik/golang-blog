@@ -30,7 +30,7 @@ func main() {
 		log.Println("Started subscription on ", cfg.NATS_Subscriber.Subject)
 	}
 
-	db, err := gorm.New()
+	db, err := gorm.New(cfg.NATS_Subscriber.PSN)
 	checkErr(err)
 	defer db.Close()
 

@@ -5,9 +5,7 @@ import (
 	go_blog "github.com/vasarostik/go_blog/pkg/utl/model"
 	"log"
 	"strings"
-
 	"github.com/vasarostik/go_blog/pkg/utl/secure"
-
 	"github.com/go-pg/pg"
 	"github.com/go-pg/pg/orm"
 )
@@ -19,13 +17,19 @@ func main() {
 	INSERT INTO public.roles VALUES (120, 120, 'COMPANY_ADMIN');
 	INSERT INTO public.roles VALUES (130, 130, 'LOCATION_ADMIN');
 	INSERT INTO public.roles VALUES (200, 200, 'USER');`
-	var psn = `postgres://postgres:l@localhost:5432/postgres`
 	queries := strings.Split(dbInsert, ";")
 
-	u, err := pg.ParseURL(psn)
-	checkErr(err)
-	db := pg.Connect(u)
-	_, err = db.Exec("SELECT 1")
+
+	db := pg.Connect(&pg.Options{
+		User: "postgres",
+		Password: "example",
+		Database: "postgres",
+		Addr: "db:5432",
+	})
+
+
+
+	_, err := db.Exec("SELECT 1")
 	checkErr(err)
 	createSchema(db, &go_blog.Role{}, &go_blog.User{}, &go_blog.Post{})
 

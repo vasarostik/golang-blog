@@ -39,7 +39,7 @@ func (s *Server) Create(ctx context.Context, in *Post) (*Response,error) {
 		//sd := s.redisCon.HMSet("post:"+strconv.Itoa(marshaled.UserID),usrM)
 
 		_ = s.redisCon.ZAdd(strconv.Itoa(post.UserID),
-			&redis.Z{Score:float64(time.Now().Unix()),Member:in.Data})
+			redis.Z{Score:float64(time.Now().Unix()),Member:in.Data})
 		resp = Response{Code: 200}
 		//log.Println(sd)
 	}

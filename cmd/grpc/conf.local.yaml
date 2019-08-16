@@ -1,8 +1,8 @@
 redisdb:
-  addr:     "localhost:6379"
+  addr:     "redis:6379"
   password: ""
   db:       0
 
 jrpc:
-  addr: :8081
+  addr: grpc:8081
 

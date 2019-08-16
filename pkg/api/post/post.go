@@ -186,7 +186,7 @@ func (u *Post) Update(c echo.Context, r *Update) (*go_blog.Post, error) {
 	}
 
 	if err := u.PublishMessage(topicPublishPost, *message); err != nil {
-		panic(err)
+		println(err)
 	}
 
 	return res,nil

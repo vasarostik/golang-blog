@@ -1,8 +1,10 @@
 nats_server:
-  addr:     "localhost:4222"
+  addr:     "nats-server:4222"
 
 nats_subscriber:
-  addr:     "localhost:8000"
+  addr:     "0.0.0.0:8000"
   subject: "posts:publish"
   logfile: "logs/posts.log"
+  psn: postgres://postgres:example@db:5432/postgres?sslmode=disable
+
 

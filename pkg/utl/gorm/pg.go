@@ -5,9 +5,10 @@ import (
 	_ "github.com/jinzhu/gorm/dialects/postgres"
 )
 
-func New() (*gorm.DB, error) {
+func New(connString string) (*gorm.DB, error) {
 
-	db, err := gorm.Open("postgres", "postgres://postgres:l@localhost:5432/postgres")
+
+	db, err := gorm.Open("postgres", connString)
 
 
 	if err != nil {
