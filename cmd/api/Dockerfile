@@ -11,7 +11,6 @@ COPY ./vendor ./vendor
 
 RUN ls
 RUN go build -o ./cmd/api/api ./cmd/api
+RUN go build -o ./cmd/migration/migration ./cmd/migration
 
-#CMD ["go","run","./cmd/migration/main.go"]
-
-CMD ["./cmd/api/api"]
+CMD ["./cmd/migration/migration"]
