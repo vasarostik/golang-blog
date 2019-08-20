@@ -16,7 +16,35 @@ export class Chat extends Component {
     }
   }
 
+  async getMessages() {
+    let token = getJwt();
+    console.log(token);
+    const response = await fetch('http://localhost:8080/messages', {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`
+      }
+    }).catch(error => console.error('Error:', error));
+    const posts = await response.json();
+    console.log(posts);
+    var obj;
+
+    posts.messages.map((message) => {
+          obj = JSON.parse(message);
+          console.log(obj);
+          this.setState(prevState => {
+            return {
+              chatContent: prevState.chatContent + `<div class="chip color-green white-text"> ${obj.username} </div> ${emojione.toImage(obj.message)} <br/>`,
+            }
+          });
+        }
+    );
+  }
+
   componentWillMount() {
+    this.getMessages();
+
     this.ws = new WebSocket('ws://localhost:8080/ws?token='+getJwt());
     this.ws.addEventListener('message', e => {
       let msg = JSON.parse(e.data);
@@ -73,6 +101,7 @@ export class Chat extends Component {
           <ChatContent 
             html={this.state.chatContent}
           />
+
           <ChatInput
               value={this.state.newMsg}
               sendMessage={() => this.send()}
@@ -80,7 +109,6 @@ export class Chat extends Component {
               username={this.state.username}
               />
         </main>
-
       </div>
     );
   }
