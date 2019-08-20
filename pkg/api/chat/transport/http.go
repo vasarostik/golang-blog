@@ -15,6 +15,7 @@ func NewHTTP(svc chat.Service, e *echo.Echo, jwtURL echo.MiddlewareFunc) {
 	h := HTTP{svc}
 
 	e.GET("/ws",h.handleConnections,jwtURL)
+
 }
 
 

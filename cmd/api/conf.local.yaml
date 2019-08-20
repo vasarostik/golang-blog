@@ -1,7 +1,7 @@
 database:
   log_queries: true
   timeout_seconds: 5
-  psn: postgres://postgres:l@localhost:5432/postgres?sslmode=disable
+  psn: postgres://postgres:example@db:5432/postgres?sslmode=disable
 
 server:
   port: :8080
