@@ -8,7 +8,7 @@ import (
 	"github.com/vasarostik/go_blog/pkg/utl/model"
 )
 
-// New creates new auth logging service
+// New creates new chat logging service
 func New(svc chat.Service, logger go_blog.Logger) *LogService {
 	return &LogService{
 		Service: svc,
@@ -16,7 +16,7 @@ func New(svc chat.Service, logger go_blog.Logger) *LogService {
 	}
 }
 
-// LogService represents auth logging service
+// LogService represents chat logging service
 type LogService struct {
 	chat.Service
 	logger go_blog.Logger
@@ -25,12 +25,12 @@ type LogService struct {
 
 const name = "chat"
 
-// Authenticate logging
+// Chat logging
 func (ls *LogService) CreateChat(c echo.Context) (err error) {
 	defer func(begin time.Time) {
 		ls.logger.Log(
 			c,
-			name, "Authenticate request", err,
+			name, "Chat request", err,
 			map[string]interface{}{
 				"took": time.Since(begin),
 			},

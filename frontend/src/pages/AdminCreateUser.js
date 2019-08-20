@@ -50,7 +50,7 @@ export class AdminCreateUser extends Component {
             password_confirm: this.state.passwordConfirm
           });
 
-          const response = await fetch('http://localhost:8080/users', {
+          const response = await fetch('http://localhost:8080/v1/users', {
             method: 'POST',
             body: data,
             headers:{

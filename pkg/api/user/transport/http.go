@@ -20,9 +20,11 @@ type HTTP struct {
 func NewHTTP(svc user.Service, er *echo.Group, e *echo.Echo) {
 	h := HTTP{svc}
 
-	e.POST("/users", h.create)
+	e.POST("/users", h.create) // user creates account
 
 	ur := er.Group("/users")
+
+	ur.POST("", h.create) // admin creates user`s account(missed some RBAC logic)
 
 	ur.GET("", h.list)
 

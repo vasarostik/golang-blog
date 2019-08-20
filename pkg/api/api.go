@@ -56,7 +56,6 @@ func Start(cfg *config.Configuration) error {
 		println(err)
 	}
 
-
 	//e.Static("/swaggerui", cfg.App.SwaggerUIPath)
 
 	at.NewHTTP(al.New(auth.Initialize(db, jwt, sec, rbac), log), e, jwt.MWFunc())
