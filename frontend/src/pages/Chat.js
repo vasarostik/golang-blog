@@ -18,17 +18,11 @@ export class Chat extends Component {
 
   componentWillMount() {
     this.ws = new WebSocket('ws://localhost:8080/ws?token='+getJwt());
-    //this.getUsers();
     this.ws.addEventListener('message', e => {
       let msg = JSON.parse(e.data);
       this.setState(prevState => {
         return {
-          chatContent: prevState.chatContent + `
-            <div class="chip color-green white-text">
-              ${msg.username}
-            </div>
-            ${emojione.toImage(msg.message)} <br/>
-          `,
+          chatContent: prevState.chatContent + `<div class="chip color-green white-text"> ${msg.username} </div> ${emojione.toImage(msg.message)} <br/>`,
         }
       });
       const el = document.getElementById('chat-messages');

@@ -5,3 +5,7 @@ type ChatMessage struct {
 	Message  string `json:"message"`
 }
 
+type MessagesList struct {
+	Messages []string `json:"messages,omitempty"`
+}
+
