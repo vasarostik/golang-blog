@@ -7,7 +7,8 @@ services:
     # Configuration for building the docker image for the service
     build:
       context: . # Use an image built from the specified dockerfile in the current directory.
-      dockerfile: cmd/api/Dockerfile
+      #dockerfile: cmd/api/Dockerfile
+      dockerfile: package/api/Dockerfile.binary
     ports:
       - "8080:8080" # Forward the exposed port 8080 on the container to port 8080 on the host machine
     depends_on:
@@ -15,7 +16,8 @@ services:
       - grpc
       - nats-server
     entrypoint: ./migration.sh
-    command: ./cmd/api/api
+    #command: ./cmd/api/api
+    command: ./package/api/api
 
   # GRPC Service
   grpc:

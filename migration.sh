@@ -1,3 +1,3 @@
 #!/bin/sh
-./cmd/migration/migration
+./package/migration/migration
 exec "$@"
