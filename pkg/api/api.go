@@ -74,7 +74,7 @@ func Start(cfg *config.Configuration) error {
 	ut.NewHTTP(ul.New(user.Initialize(db, rbac, sec), log), v1, e)
 	pt.NewHTTP(pl.New(password.Initialize(db, rbac, sec), log), v1)
 	pst.NewHTTP(psl.New(post.Initialize(db, rbac, sec, GRPCclient, natsClient), log), v1)
-	ct.NewHTTP(csl.New(chat.Initialize(dbRedisClient),log),e,jwt.MWFuncURL())
+	ct.NewHTTP(csl.New(chat.Initialize(dbRedisClient),log),e,jwt.MWFuncURL(),jwt.MWFunc())
 
 	server.Start(e, &server.Config{
 		Port:                cfg.Server.Port,

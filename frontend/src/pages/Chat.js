@@ -4,6 +4,7 @@ import ChatContent from '../components/ChatContent';
 import '../css/Chat.css';
 import ChatInput from '../components/ChatInput';
 import {getJwt} from "../jwt";
+import {Button, ButtonGroup} from "react-bootstrap";
 
 export class Chat extends Component {
   constructor(props) {
@@ -109,6 +110,10 @@ export class Chat extends Component {
               username={this.state.username}
               />
         </main>
+
+        <ButtonGroup className="mr-2 buttns" aria-label="First group">
+          <Button href="./mainpage" variant="secondary">Back</Button>
+        </ButtonGroup>
       </div>
     );
   }

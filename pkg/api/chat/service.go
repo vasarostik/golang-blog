@@ -21,7 +21,6 @@ func Initialize(db *redis.Client) *ServiceStruct {
 		key:ChatKey,
 		db:db,
 	}
-
 }
 
 

@@ -13,17 +13,15 @@ type HTTP struct {
 }
 
 // NewHTTP creates new user http service
-func NewHTTP(svc chat.Service, e *echo.Echo, jwtURL echo.MiddlewareFunc) {
+func NewHTTP(svc chat.Service, e *echo.Echo, jwtURL echo.MiddlewareFunc, jwtHeader echo.MiddlewareFunc) {
 	h := HTTP{svc}
 
 	e.GET("/ws",h.handleConnections,jwtURL)
-	e.GET("/messages",h.handlemessages)
+	e.GET("/messages",h.handleMessages,jwtHeader)
 
 }
 
-
 func(h *HTTP) handleConnections(c echo.Context) error {
-
 
 	err := h.svc.CreateWebSocket(c)
 
@@ -34,8 +32,7 @@ func(h *HTTP) handleConnections(c echo.Context) error {
 	return nil
 }
 
-func(h *HTTP) handlemessages(c echo.Context) error {
-
+func(h *HTTP) handleMessages(c echo.Context) error {
 
 	messages,err := h.svc.Redis_GetMessages(c)
 
