@@ -61,10 +61,35 @@ func (j *Service) MWFunc() echo.MiddlewareFunc {
 	}
 }
 
+
+func (j *Service) MWFuncURL() echo.MiddlewareFunc {
+	return func(next echo.HandlerFunc) echo.HandlerFunc {
+		return func(c echo.Context) error {
+			token, err := j.ParseTokenURL(c)
+			if err != nil || !token.Valid {
+				return c.NoContent(http.StatusUnauthorized)
+			}
+
+			claims := token.Claims.(jwt.MapClaims)
+
+			id := int(claims["id"].(float64))
+			username := claims["u"].(string)
+			role := go_blog.AccessRole(claims["r"].(float64))
+
+			c.Set("id", id)
+			c.Set("username", username)
+			c.Set("role", role)
+
+			return next(c)
+		}
+	}
+}
+
 // ParseToken parses token from Authorization header
 func (j *Service) ParseToken(c echo.Context) (*jwt.Token, error) {
 
 	token := c.Request().Header.Get("Authorization")
+
 	if token == "" {
 		return nil, go_blog.ErrGeneric
 	}
@@ -74,6 +99,25 @@ func (j *Service) ParseToken(c echo.Context) (*jwt.Token, error) {
 	}
 
 	return jwt.Parse(parts[1], func(token *jwt.Token) (interface{}, error) {
+		if j.algo != token.Method {
+			return nil, go_blog.ErrGeneric
+		}
+		return j.key, nil
+	})
+
+}
+
+// ParseTokenURL parses token from URL
+func (j *Service) ParseTokenURL(c echo.Context) (*jwt.Token, error) {
+
+	token := c.QueryParam("token")
+
+	if token == "" {
+		return nil, go_blog.ErrGeneric
+	}
+
+	return jwt.Parse(token, func(token *jwt.Token) (interface{}, error) {
+
 		if j.algo != token.Method {
 			return nil, go_blog.ErrGeneric
 		}

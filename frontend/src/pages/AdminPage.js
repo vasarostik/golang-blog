@@ -2,64 +2,11 @@ import React, { Component } from 'react';
 import '../css/Logging.css';
 import { Button,ButtonGroup } from 'react-bootstrap';
 import {getJwt} from "../jwt";
+import {Chat} from "./Chat";
 
 export class AdminPage extends Component {
   constructor(props) {
     super(props);
-    this.handleEmail=this.handleEmail.bind(this)
-    this.handleSubmit = this.handleSubmit.bind(this);
-    this.handlePasswordChange = this.handlePasswordChange.bind(this)
-    this.state = {
-      email: '',
-      password: ''
-    }
-  }
-
-     handleSubmit (event) {
-        event.preventDefault();
-        console.log(getJwt());
-        console.log(this.props.history.location)
-
-        let registered;
-
-        // perform all neccassary validations
-        if (this.state.password === '') {
-          alert("Please, fill in all fields!")
-        } else {
-          console.log('passed validation!')
-          registered = true
-          let data = JSON.stringify({
-            Username: this.state.username,
-            Password: this.state.password,
-          });
-
-          fetch('http://localhost:8080/login', {
-            method: 'POST',
-            body: data,
-            headers:{
-              'Content-Type': 'application/json'
-            },
-          }).then(res => res.json())
-              .then(response => console.log('Body:', JSON.stringify(response)))
-              .catch(error => console.error('Error:', error));;
-
-
-          if (registered === true) {
-            this.props.history.push('/logged');
-          }
-
-          console.log(getJwt());
-        }
-
-  }
-
-
-  handleEmail(event) {
-    this.setState({ username: event.target.value })
-  }
-
-  handlePasswordChange(event) {
-    this.setState({ password: event.target.value })
   }
 
   render() {
@@ -79,7 +26,7 @@ export class AdminPage extends Component {
 
             {/*Input form */}
             <div>
-            <form className="reg-form"  onSubmit={this.handleSubmit}>
+            <form className="reg-form">
               <h4 className="font-weight-bold mb-3">Admin`s features</h4>
               <div>
                 <h4>User</h4>
@@ -99,15 +46,16 @@ export class AdminPage extends Component {
                 </ButtonGroup>
               </div>
 
-
-
-
               <h1 className="font-weight-bold greeting">Hello, Admin!</h1>
             </form>
             </div>
 
-
           </div>
+
+          <ButtonGroup className="mr-2 buttns" aria-label="First group">
+            <Button href="./chat" variant="secondary">Chat</Button>
+          </ButtonGroup>
+
           {/* end of main container */}
         </div>
 

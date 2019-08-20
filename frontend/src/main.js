@@ -11,6 +11,7 @@ import { ModifyPost } from "./pages/ModifyPost";
 import { DeleteUser } from "./pages/DeleteUser";
 import { AdminCreateUser } from "./pages/AdminCreateUser";
 import {Registration} from "./pages/Registration";
+import {Chat} from "./pages/Chat";
 import { Redirect } from "./components/Redirect";
 import "./css/bootstrap.min.css";
 
@@ -19,7 +20,9 @@ render(<BrowserRouter>
         <Route exact path="/" component={Logging}/>
         <Route exact path="/registration" component={Registration}/>
 
+
         <Redirect>
+            <Route exact path="/chat" component={Chat}/>
             <Route exact path="/mainpage" component={MainPage}/>
             <Route exact path="/adminpage" component={AdminPage}/>
             <Route exact path="/userlist" component={UserList}/>

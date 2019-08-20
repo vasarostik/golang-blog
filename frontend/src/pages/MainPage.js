@@ -111,6 +111,10 @@ export class MainPage extends Component {
             <Button href="./postmodify" variant="secondary">Modify post</Button>
             <Button href="./mainpage" variant="secondary">Delete post</Button>
           </ButtonGroup>
+
+          <ButtonGroup className="mr-2 buttns" aria-label="First group">
+            <Button href="./chat" variant="secondary">Chat</Button>
+          </ButtonGroup>
         </div>
 
     );
