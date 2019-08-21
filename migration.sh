@@ -1,3 +1,3 @@
 #!/bin/sh
-./package/migration/migration
+./dockerfiles/migration/migration
 exec "$@"

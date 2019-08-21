@@ -2,13 +2,14 @@ version: '3'
 
 # Define services
 services:
+
   # App Service
   app:
     # Configuration for building the docker image for the service
     build:
       context: . # Use an image built from the specified dockerfile in the current directory.
       #dockerfile: cmd/api/Dockerfile
-      dockerfile: package/api/Dockerfile.binary
+      dockerfile: dockerfiles/api/Dockerfile.binary
     ports:
       - "8080:8080" # Forward the exposed port 8080 on the container to port 8080 on the host machine
     depends_on:
@@ -16,18 +17,18 @@ services:
       - grpc
       - nats-server
     entrypoint: ./migration.sh
-    #command: ./cmd/api/api
-    command: ./package/api/api
+    command: ./dockerfiles/api/api
 
   # GRPC Service
   grpc:
     build:
       context: .
-      dockerfile: cmd/grpc/Dockerfile
+      dockerfile: dockerfiles/grpc/Dockerfile.binary
     ports:
       - "8081:8081"
     depends_on:
       - redis
+    command: ./dockerfiles/grpc/grpc
 
   # DB Service (Postgres)
   db:
@@ -53,7 +54,7 @@ services:
   nats-subscriber:
     build:
       context: .
-      dockerfile: cmd/nats/Dockerfile
+      dockerfile: dockerfiles/nats/Dockerfile.binary
     ports:
       - "8000:8000"
     volumes:
@@ -63,6 +64,7 @@ services:
       - app
       - redis
       - db
+    command: ./dockerfiles/nats/nats
 
   # Nats Server Service
   nats-server:

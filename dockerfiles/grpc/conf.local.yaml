@@ -1,0 +1,8 @@
+redisdb:
+  addr:     "redis:6379"
+  password: ""
+  db:       0
+
+jrpc:
+  addr: grpc:8081
+

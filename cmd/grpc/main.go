@@ -15,7 +15,7 @@ import (
 
 func main() {
 
-	cfgPath := flag.String("p", "./cmd/grpc/conf.local.yaml", "Path to config file")
+	cfgPath := flag.String("p", "./dockerfiles/grpc/conf.local.yaml", "Path to config file")
 	flag.Parse()
 
 	cfg, err := config.Load(*cfgPath)

@@ -15,7 +15,7 @@ import (
 
 func main() {
 
-	cfgPath := flag.String("p", "./cmd/nats/conf.local.yaml", "Path to config file")
+	cfgPath := flag.String("p", "./dockerfiles/nats/conf.local.yaml", "Path to config file")
 
 	flag.Parse()
 

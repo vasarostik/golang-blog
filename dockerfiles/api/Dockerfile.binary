@@ -1,0 +1,13 @@
+FROM golang:alpine
+
+WORKDIR /go/src/github.com/vasarostik/go_blog/
+
+RUN apk add --no-cache \
+        libc6-compat
+
+COPY ./dockerfiles/api ./dockerfiles/api
+COPY ./dockerfiles/migration ./dockerfiles/migration
+COPY ./migration.sh ./
+
+RUN chmod +x migration.sh
+
