@@ -7,6 +7,7 @@ RUN apk add --no-cache \
 
 COPY ./dockerfiles/api ./dockerfiles/api
 COPY ./dockerfiles/migration ./dockerfiles/migration
+COPY ./swagger ./swagger
 COPY ./migration.sh ./
 
 RUN chmod +x migration.sh

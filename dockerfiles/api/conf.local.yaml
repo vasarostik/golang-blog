@@ -18,6 +18,7 @@ jwt:
 
 application:
   min_password_strength: 1
+  swagger_path: swagger
 
 jrpc:
   addr: grpc:8081

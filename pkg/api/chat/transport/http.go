@@ -16,7 +16,24 @@ type HTTP struct {
 func NewHTTP(svc chat.Service, e *echo.Echo, jwtURL echo.MiddlewareFunc, jwtHeader echo.MiddlewareFunc) {
 	h := HTTP{svc}
 
+	// swagger:route GET /ws chat generateChat
+	// Creates new Web Socket connection.
+	// responses:
+	//  200:
+	//  400: errMsg
+	//  401: err
+	//  403: errMsg
+	//  500: err
 	e.GET("/ws",h.handleConnections,jwtURL)
+
+	// swagger:route GET /mesages chat generateChat
+	// Creates new Web Socket connection.
+	// responses:
+	//  200: messagesListResp
+	//  400: errMsg
+	//  401: err
+	//  403: errMsg
+	//  500: err
 	e.GET("/messages",h.handleMessages,jwtHeader)
 
 }

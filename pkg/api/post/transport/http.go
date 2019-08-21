@@ -16,21 +16,23 @@ type HTTP struct {
 // NewHTTP creates new user http service
 func NewHTTP(svc post.Service, er *echo.Group) {
 	h := HTTP{svc}
+
 	ur := er.Group("/post")
-	// swagger:route POST /v1/users users userCreate
-	// Creates new user account.
+
+	// swagger:route POST /v1/post/create posts createPost
+	// Creates new post.
 	// responses:
-	//  200: userResp
+	//  200: postResp
 	//  400: errMsg
 	//  401: err
 	//  403: errMsg
 	//  500: err
 	ur.POST("/create", h.create)
 
-	// swagger:operation GET /v1/users users listUsers
+	// swagger:operation GET /v1/posts/my posts MyPosts
 	// ---
-	// summary: Returns list of users.
-	// description: Returns list of users. Depending on the user role requesting it, it may return all users for SuperAdmin/Admin users, all company/location users for Company/Location admins, and an error for non-admin users.
+	// summary: Returns list of users`s posts.
+	// description: Returns list of posts.
 	// parameters:
 	// - name: limit
 	//   in: query
@@ -44,7 +46,7 @@ func NewHTTP(svc post.Service, er *echo.Group) {
 	//   required: false
 	// responses:
 	//   "200":
-	//     "$ref": "#/responses/userListResp"
+	//     "$ref": "#/responses/postListResp"
 	//   "400":
 	//     "$ref": "#/responses/errMsg"
 	//   "401":
@@ -55,86 +57,140 @@ func NewHTTP(svc post.Service, er *echo.Group) {
 	//     "$ref": "#/responses/err"
 	ur.GET("s/my", h.myList)
 
+	// swagger:operation GET /v1/posts/my/grpc posts myPostsGRPC
+	// ---
+	// summary: Returns list of user`s posts with GRPC.
+	// description: Returns list of users.
+	// parameters:
+	// - name: limit
+	//   in: query
+	//   description: number of results
+	//   type: int
+	//   required: false
+	// - name: page
+	//   in: query
+	//   description: page number
+	//   type: int
+	//   required: false
+	// responses:
+	//   "200":
+	//     "$ref": "#/responses/postListResp"
+	//   "400":
+	//     "$ref": "#/responses/errMsg"
+	//   "401":
+	//     "$ref": "#/responses/err"
+	//   "403":
+	//     "$ref": "#/responses/err"
+	//   "500":
+	//     "$ref": "#/responses/err"
 	ur.GET("s/my/grpc", h.myListGRPC)
 
-
+	// swagger:operation GET /v1/posts posts allPosts
+	// ---
+	// summary: Returns list of posts.
+	// description: Returns list of post.
+	// parameters:
+	// - name: limit
+	//   in: query
+	//   description: number of results
+	//   type: int
+	//   required: false
+	// - name: page
+	//   in: query
+	//   description: page number
+	//   type: int
+	//   required: false
+	// responses:
+	//   "200":
+	//     "$ref": "#/responses/postListResp"
+	//   "400":
+	//     "$ref": "#/responses/errMsg"
+	//   "401":
+	//     "$ref": "#/responses/err"
+	//   "403":
+	//     "$ref": "#/responses/err"
+	//   "500":
+	//     "$ref": "#/responses/err"
 	ur.GET("s", h.list)
-	//
-	//// swagger:operation GET /v1/users/{id} users getUser
-	//// ---
-	//// summary: Returns a single user.
-	//// description: Returns a single user by its ID.
-	//// parameters:
-	//// - name: id
-	////   in: path
-	////   description: id of user
-	////   type: int
-	////   required: true
-	//// responses:
-	////   "200":
-	////     "$ref": "#/responses/userResp"
-	////   "400":
-	////     "$ref": "#/responses/err"
-	////   "401":
-	////     "$ref": "#/responses/err"
-	////   "403":
-	////     "$ref": "#/responses/err"
-	////   "404":
-	////     "$ref": "#/responses/err"
-	////   "500":
-	////     "$ref": "#/responses/err"
+
+	// swagger:operation GET /v1/posts/{id} posts singlePost
+	// ---
+	// summary: Returns a single post.
+	// description: Returns a single post by its ID.
+	// parameters:
+	// - name: id
+	//   in: path
+	//   description: id of post
+	//   type: int
+	//   required: true
+	// responses:
+	//   "200":
+	//     "$ref": "#/responses/postResp"
+	//   "400":
+	//     "$ref": "#/responses/err"
+	//   "401":
+	//     "$ref": "#/responses/err"
+	//   "403":
+	//     "$ref": "#/responses/err"
+	//   "404":
+	//     "$ref": "#/responses/err"
+	//   "500":
+	//     "$ref": "#/responses/err"
 	ur.GET("/:id", h.view)
-	//
-	//// swagger:operation PATCH /v1/users/{id} users userUpdate
-	//// ---
-	//// summary: Updates user's contact information
-	//// description: Updates user's contact information -> first name, last name, mobile, phone, address.
-	//// parameters:
-	//// - name: id
-	////   in: path
-	////   description: id of user
-	////   type: int
-	////   required: true
-	//// - name: request
-	////   in: body
-	////   description: Request body
-	////   required: true
-	////   schema:
-	////     "$ref": "#/definitions/userUpdate"
-	//// responses:
-	////   "200":
-	////     "$ref": "#/responses/userResp"
-	////   "400":
-	////     "$ref": "#/responses/errMsg"
-	////   "401":
-	////     "$ref": "#/responses/err"
-	////   "403":
-	////     "$ref": "#/responses/err"
-	////   "500":
-	////     "$ref": "#/responses/err"
+
+	// swagger:operation PATCH /v1/post/{id} posts singleUpdatePost
+	// ---
+	// summary: Updates post's information
+	// parameters:
+	// - name: id
+	//   in: path
+	//   description: id of post
+	//   type: int
+	//   required: true
+	// - name: title
+	//   in: body
+	//   description: Title of post
+	//   required: true
+	// - name: content
+	//   in: body
+	//   description: Conent of post
+	//   required: true
+	// responses:
+	//   "200":
+	//     "$ref": "#/responses/postResp"
+	//   "400":
+	//     "$ref": "#/responses/errMsg"
+	//   "401":
+	//     "$ref": "#/responses/err"
+	//   "403":
+	//     "$ref": "#/responses/err"
+	//   "500":
+	//     "$ref": "#/responses/err"
 	ur.PATCH("/:id", h.update)
 	//
-	//// swagger:operation DELETE /v1/users/{id} users userDelete
-	//// ---
-	//// summary: Deletes a user
-	//// description: Deletes a user with requested ID.
-	//// parameters:
-	//// - name: id
-	////   in: path
-	////   description: id of user
-	////   type: int
-	////   required: true
-	//// responses:
-	////   "200":
-	////     "$ref": "#/responses/ok"
-	////   "400":
-	////     "$ref": "#/responses/err"
-	////   "401":
-	////     "$ref": "#/responses/err"
-	////   "403":
-	////     "$ref": "#/responses/err"
-	////   "500":
-	////     "$ref": "#/responses/err"
+	// swagger:operation DELETE /v1/post/{id} posts deletePost
+	// ---
+	// summary: Deletes a post
+	// description: Deletes a post with requested ID.
+	// parameters:
+	// - name: id
+	//   in: path
+	//   description: id of post
+	//   type: int
+	//   required: true
+	// responses:
+	//   "200":
+	//     "$ref": "#/responses/ok"
+	//   "400":
+	//     "$ref": "#/responses/err"
+	//   "401":
+	//     "$ref": "#/responses/err"
+	//   "403":
+	//     "$ref": "#/responses/err"
+	//   "500":
+	//     "$ref": "#/responses/err"
+
+
 	ur.DELETE("/:id", h.delete)
 }
 
@@ -260,7 +316,8 @@ func (h *HTTP) update(c echo.Context) error {
 
 	return c.JSON(http.StatusOK, post)
 }
-//
+
+
 func (h *HTTP) delete(c echo.Context) error {
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {

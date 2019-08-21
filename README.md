@@ -3,8 +3,10 @@
  - gRPC
  - GORM
  - NATS Messaging System
+ - Docker
  - React JS
  - Gorilla Web Socket lib
+ - Swagger
 
 **To start project run :**
 - Install Docker with Docker Compose
