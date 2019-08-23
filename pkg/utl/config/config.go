@@ -8,13 +8,13 @@ import (
 yaml "gopkg.in/yaml.v2"
 )
 
-// Load returns Configuration struct
-func Load(path string) (*Configuration, error) {
+// Load_Manager returns ConfigManager struct
+func Load_Manager(path string) (*ConfigManager, error) {
 	bytes, err := ioutil.ReadFile(path)
 	if err != nil {
 		return nil, fmt.Errorf("error reading config file, %s", err)
 	}
-	var cfg = new(Configuration)
+	var cfg = new(ConfigManager)
 	if err := yaml.Unmarshal(bytes, cfg); err != nil {
 		return nil, fmt.Errorf("unable to decode into struct, %v", err)
 	}
@@ -23,16 +23,30 @@ func Load(path string) (*Configuration, error) {
 
 // Configuration holds data necessery for configuring application
 type Configuration struct {
+	API_ms  *API_ms `yaml:"api_ms,omitempty"`
+	GRPC_ms *GRPC_ms `yaml:"grpc_ms,omitempty"`
+	NATS_ms *NATS_ms `yaml:"nats_ms,omitempty"`
+}
+
+type API_ms struct {
 	Server *Server      `yaml:"server,omitempty"`
 	DB     *Database    `yaml:"database,omitempty"`
 	Redis  *Redis    	`yaml:"redisdb,omitempty"`
 	GRPC   *GRPC		`yaml:"jrpc,omitempty"`
 	NATS_Server   	*NATS_Server		`yaml:"nats_server,omitempty"`
-	NATS_Subscriber	*NATS_Subscriber `yaml:"nats_subscriber,omitempty"`
 	JWT    *JWT         `yaml:"jwt,omitempty"`
 	App    *Application `yaml:"application,omitempty"`
 }
 
+type GRPC_ms struct {
+	Redis  *Redis    	`yaml:"redisdb,omitempty"`
+	GRPC   *GRPC		`yaml:"jrpc,omitempty"`
+}
+
+type NATS_ms struct {
+	NATS_Subscriber	*NATS_Subscriber `yaml:"nats_subscriber,omitempty"`
+	NATS_Server   	*NATS_Server		`yaml:"nats_server,omitempty"`
+}
 // Database holds data necessery for database configuration
 type Database struct {
 	PSN        string `yaml:"psn,omitempty"`
@@ -82,4 +96,8 @@ type NATS_Subscriber struct {
 	Subject string `json:"subject"`
 	LogFile string `json:"logfile"`
 	PSN        string `yaml:"psn,omitempty"`
+}
+
+type ConfigManager struct {
+	Addr string `yaml:"configManagerAddr"`
 }

@@ -1,0 +1,9 @@
+FROM golang:alpine
+
+WORKDIR /go/src/github.com/vasarostik/go_blog/
+
+RUN apk add --no-cache \
+        libc6-compat
+
+COPY ./dockerfiles/configManager ./dockerfiles/configManager
+COPY ./azure.env ./azure.env

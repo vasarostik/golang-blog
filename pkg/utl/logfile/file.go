@@ -6,9 +6,9 @@ import (
 	"os"
 )
 
-func New(cfg *config.Configuration) (*os.File, error) {
+func New(cfg *config.NATS_Subscriber) (*os.File, error) {
 
-	f, err := os.OpenFile(cfg.NATS_Subscriber.LogFile, os.O_RDWR|os.O_CREATE|os.O_APPEND, 0666)
+	f, err := os.OpenFile(cfg.LogFile, os.O_RDWR|os.O_CREATE|os.O_APPEND, 0666)
 	if err != nil {
 		fmt.Println(err)
 		return nil, err

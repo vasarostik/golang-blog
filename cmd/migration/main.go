@@ -1,33 +1,56 @@
 package main
 
 import (
+	"context"
 	"flag"
 	"fmt"
 	"github.com/go-pg/pg"
 	"github.com/go-pg/pg/orm"
+	config_service "github.com/vasarostik/go_blog/pkg/configManager/service"
 	"github.com/vasarostik/go_blog/pkg/utl/config"
+	"github.com/vasarostik/go_blog/pkg/utl/configManager/configClient"
 	go_blog "github.com/vasarostik/go_blog/pkg/utl/model"
+	"github.com/vasarostik/go_blog/pkg/utl/postgres"
 	"github.com/vasarostik/go_blog/pkg/utl/secure"
+	"gopkg.in/yaml.v2"
 	"log"
 	"strings"
 )
 
 func main() {
 
-	cfgPath := flag.String("p", "./dockerfiles/api/conf.local.yaml", "Path to config file")
+	cfgPath := flag.String("p", "./dockerfiles/configManager/conf.local.yaml", "Path to config file")
 	flag.Parse()
 
-	cfg, err := config.Load(*cfgPath)
+	cfg, err := config.Load_Manager(*cfgPath)
 
 	checkErr(err)
 
-	u, err := pg.ParseURL(cfg.DB.PSN)
+	var configApi = new(config.API_ms)
+	var req 	  = new(config_service.Request)
+
+	//Manager client
+	configManagerClient,err := configClient.New(cfg)
+	checkErr(err)
+
+
+	byteConf,err := configManagerClient.GetAPIConfig(context.Background(),req)
+	checkErr(err)
+
+	err = yaml.Unmarshal(byteConf.Data,configApi)
+	checkErr(err)
+
+
+	db, err := postgres.New(configApi.DB.PSN, configApi.DB.Timeout, configApi.DB.LogQueries)
+	checkErr(err)
+
+	u, err := pg.ParseURL(configApi.DB.PSN)
 
 	if err != nil {
 		println("Can`t parse connection string!")
 	}
 
-	db := pg.Connect(u)
+	db = pg.Connect(u)
 
 	_, err = db.Exec("SELECT 1")
 	checkErr(err)

@@ -14,10 +14,22 @@ services:
       - "8080:8080" # Forward the exposed port 8080 on the container to port 8080 on the host machine
     depends_on:
       - db # This service depends on db. Start that first.
+      - manager
       - grpc
       - nats-server
     entrypoint: ./migration.sh
     command: ./dockerfiles/api/api
+
+  # Manager Service
+  manager:
+    build:
+      context: .
+      dockerfile: dockerfiles/configManager/Dockerfile.binary
+    ports:
+      - "10001:10001"
+    env_file:
+      - ./azure.env
+    command: ./dockerfiles/configManager/configManager
 
   # GRPC Service
   grpc:
@@ -27,6 +39,7 @@ services:
     ports:
       - "8081:8081"
     depends_on:
+      - manager
       - redis
     command: ./dockerfiles/grpc/grpc
 
@@ -60,6 +73,7 @@ services:
     volumes:
       - ./logs:/go/src/github.com/vasarostik/go_blog/logs
     depends_on:
+      - manager
       - nats-server
       - app
       - redis

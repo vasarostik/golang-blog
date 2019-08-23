@@ -7,6 +7,7 @@
  - React JS
  - Gorilla Web Socket lib
  - Swagger
+ - Microsoft Azure
 
 **To start project run :**
 - Install Docker with Docker Compose

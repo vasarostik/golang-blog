@@ -9,6 +9,7 @@ COPY ./dockerfiles/api ./dockerfiles/api
 COPY ./dockerfiles/migration ./dockerfiles/migration
 COPY ./swagger ./swagger
 COPY ./migration.sh ./
+COPY ./dockerfiles/configManager/conf.local.yaml ./dockerfiles/configManager/conf.local.yaml
 
 RUN chmod +x migration.sh
 

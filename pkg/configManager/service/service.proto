@@ -1,0 +1,21 @@
+syntax = "proto3";
+package config_service;
+
+
+service Send {
+    // Send Config File
+    rpc GetAPIConfig (Request) returns (ConfStruct);
+    rpc GetGRPCConfig(Request) returns (ConfStruct);
+    rpc GetNATSConfig(Request) returns (ConfStruct);
+}
+
+message ConfStruct {
+
+     bytes data = 1;
+}
+
+message Request {
+
+}
+
+

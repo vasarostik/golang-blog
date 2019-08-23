@@ -6,4 +6,5 @@ RUN apk add --no-cache \
         libc6-compat
 
 COPY ./dockerfiles/grpc ./dockerfiles/grpc
+COPY ./dockerfiles/configManager/conf.local.yaml ./dockerfiles/configManager/conf.local.yaml
 

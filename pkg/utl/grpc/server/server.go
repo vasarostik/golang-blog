@@ -6,10 +6,11 @@ import (
 	"google.golang.org/grpc"
 	"log"
 	"net"
+	"os"
 )
 
 func Start(v1API service.CreatePostZServer, cfg *config.GRPC) {
-	lis, err := net.Listen("tcp", cfg.Addr)
+	lis, err := net.Listen("tcp",os.Getenv("MANAGER_HOST")+cfg.Addr)
 
 	if err != nil {
 		panic(err)
@@ -17,6 +18,6 @@ func Start(v1API service.CreatePostZServer, cfg *config.GRPC) {
 
 	grpcServer := grpc.NewServer()
 	service.RegisterCreatePostZServer(grpcServer,v1API)
-	log.Printf("Server listening on endpoint "+ cfg.Addr)
+	log.Printf("This is gRPC listening on endpoint "+ os.Getenv("MANAGER_HOST")+ cfg.Addr)
 	_=grpcServer.Serve(lis)
 }

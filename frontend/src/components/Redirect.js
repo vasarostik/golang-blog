@@ -45,8 +45,7 @@ export class Redirect extends Component {
     render() {
         if (this.state.access === false) {
             return (
-                <div>
-                </div>
+                <div> </div>
             )
         }
         return (

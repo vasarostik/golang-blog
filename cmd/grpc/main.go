@@ -2,30 +2,23 @@ package main
 
 import (
 	"flag"
-	"github.com/vasarostik/go_blog/pkg/grpc/service"
-
+	"github.com/vasarostik/go_blog/pkg/grpc"
 	"github.com/vasarostik/go_blog/pkg/utl/config"
-	gc "github.com/vasarostik/go_blog/pkg/utl/grpc/server"
-	//"fmt"
-	//"github.com/vasarostik/go_blog/pkg/grpc"
-	//"os"
-	//"github.com/vasarostik/go_blog/pkg/api"
-	"github.com/vasarostik/go_blog/pkg/utl/redis"
 )
 
 func main() {
 
-	cfgPath := flag.String("p", "./dockerfiles/grpc/conf.local.yaml", "Path to config file")
+	cfgPath := flag.String("p", "./dockerfiles/configManager/conf.local.yaml", "Path to config file")
 	flag.Parse()
 
-	cfg, err := config.Load(*cfgPath)
+	cfg, err := config.Load_Manager(*cfgPath)
+
 	checkErr(err)
 
-	dbRedisClient, err := redis.New(cfg.Redis)
+	err = grpc.Start(cfg)
 
-	grpcService := service.New(dbRedisClient)
+	checkErr(err)
 
-	gc.Start(grpcService, cfg.GRPC)
 }
 
 func checkErr(err error) {

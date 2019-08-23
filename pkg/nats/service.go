@@ -10,11 +10,11 @@ import (
 	"os"
 )
 
-func Start(cfg *config.Configuration, natsClient *nats.Conn, db *gorm.DB, logfile *os.File) error {
+func StartService(cfg *config.NATS_Subscriber, natsClient *nats.Conn, db *gorm.DB, logfile *os.File) error {
 
 	var message = new(go_blog.PublishPostMessage)
 
-	if _, err := natsClient.Subscribe(cfg.NATS_Subscriber.Subject, func (m *nats.Msg) {
+	if _, err := natsClient.Subscribe(cfg.Subject, func (m *nats.Msg) {
 
 		if err := json.Unmarshal(m.Data, &message); err != nil {
 			panic(err)
@@ -30,7 +30,7 @@ func Start(cfg *config.Configuration, natsClient *nats.Conn, db *gorm.DB, logfil
 		}
 
 	}); err != nil {
-		log.Fatalf("Failed to start subscription on '%s': %v", cfg.NATS_Subscriber.Subject, err)
+		log.Fatalf("Failed to start subscription on '%s': %v", cfg.Subject, err)
 	} else {
 
 	}
