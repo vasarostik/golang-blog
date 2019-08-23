@@ -1,5 +1,5 @@
 .idea/
-azure.env
+./azure.env
 third_party/
 cmd/api/config/files/config.dev.yaml
 dockerfiles/api/api
