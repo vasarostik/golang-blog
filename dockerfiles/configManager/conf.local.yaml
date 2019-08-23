@@ -1,1 +1,1 @@
-configManagerAddr: :10001
+configManagerAddr: manager:10001
