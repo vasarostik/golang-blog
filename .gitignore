@@ -6,5 +6,6 @@ dockerfiles/api/api
 dockerfiles/grpc/grpc
 dockerfiles/migration/migration
 dockerfiles/nats/nats
+dockerfiles/configManager/configManager
 
 

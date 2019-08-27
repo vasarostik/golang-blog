@@ -1,0 +1,59 @@
+api_ms:
+
+  nats_server:
+    addr:     "nats-server:4222"
+
+  database:
+    log_queries: true
+    timeout_seconds: 5
+    psn: postgres://postgres:example@db:5432/postgres?sslmode=disable
+
+
+  server:
+    port: :8080
+    debug: true
+    read_timeout_seconds: 10
+    write_timeout_seconds: 5
+
+  jwt:
+    secret: jwtrealm # Change this value
+    duration_minutes: 15
+    refresh_duration_minutes: 15
+    max_refresh_minutes: 1440
+    signing_algorithm: HS256
+
+  application:
+    min_password_strength: 1
+    swagger_path: swagger
+
+  jrpc:
+    addr: grpc:8081
+
+  redisdb:
+    addr:     "redis:6379"
+    password: ""
+    db:       0
+
+grpc_ms:
+
+  redisdb:
+    addr:     "redis:6379"
+    password: ""
+    db:       0
+    
+  jrpc:
+    addr: grpc:8081
+
+nats_ms:
+
+  nats_subscriber:
+    addr:     "0.0.0.0:8000"
+    subject: "posts:publish"
+    logfile: "logs/posts.log"
+    psn: postgres://postgres:example@db:5432/postgres?sslmode=disable
+  
+  nats_server:
+    addr:     "nats-server:4222"
+
+
+
