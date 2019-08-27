@@ -10,6 +10,7 @@ COPY ./dockerfiles/migration ./dockerfiles/migration
 COPY ./swagger ./swagger
 COPY ./migration.sh ./
 COPY ./dockerfiles/configManager/conf.local.yaml ./dockerfiles/configManager/conf.local.yaml
+COPY ./azure.env ./azure.env
 
 RUN chmod +x migration.sh
 

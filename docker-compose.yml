@@ -17,6 +17,8 @@ services:
       - manager
       - grpc
       - nats-server
+    env_file:
+      - ./azure.env
     entrypoint: ./migration.sh
     command: ./dockerfiles/api/api
 
@@ -41,6 +43,8 @@ services:
     depends_on:
       - manager
       - redis
+    env_file:
+      - ./azure.env
     command: ./dockerfiles/grpc/grpc
 
   # DB Service (Postgres)
@@ -78,6 +82,8 @@ services:
       - app
       - redis
       - db
+    env_file:
+      - ./azure.env
     command: ./dockerfiles/nats/nats
 
   # Nats Server Service

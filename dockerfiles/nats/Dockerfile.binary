@@ -8,6 +8,8 @@ RUN apk add --no-cache \
 
 COPY ./dockerfiles/nats ./dockerfiles/nats
 COPY ./dockerfiles/configManager/conf.local.yaml ./dockerfiles/configManager/conf.local.yaml
+COPY ./azure.env ./azure.env
+
 
 
 
