@@ -1,3 +1,7 @@
+**About project**
+
+It is a blog with chatting features, there are two options of using database storage: relation and non-relational database(PostgreSQL/Redis). Chat messages are stored in Redis while user`s posts are stored in PostgreSQL. All configs are stored in Azure blob storage and **configManager** microservice is responsible for pulling them, so that this microservice should be run first. Also, there is separate Nats microservice for logging.
+
 **Blog is written in Golang, using :**
  - GORSK Restful Starter Kit
  - gRPC
